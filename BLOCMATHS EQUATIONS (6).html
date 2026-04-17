@@ -1,0 +1,2846 @@
+<html lang="fr" style="--eqZoom: 0.70;"><head><script type='text/javascript' nonce='ffFvGhhsVx50byd2iRcP2w==' src='https://mathsxp.odoo.com/2wRccgwI8mXJzpa086q7jtCqP4UkDmOuIO4db--NSfZWrNarJpkgnHhj-EEZcF6VZei4gdB4fZ7sRyK5qaTNxyi_epsE468HagujElVdQgfPJVgfwMZFjedK6mrZvjCZtKzlDNLbzfBJ4HbDGcxckHttKwPf20d_ZPUbPJXpjiLc0ah4_3eiOrY6wv7jyhi24fD9hOQYu5K2F79ShqQ9fA2KiFfuCQHY051ap4593OWAtbtHgKYIJQhN8jL81NEE4An2xUY8EHRT_1zufWNcaRniTRJMFZgeutwKfwnRi4556LpHfUPdFKXsvDNPnkpDrjbvj5W50ZckBnxZt9G2T9KZ3vxnPb_IWqWH3uWPhVKnQ2Mk-RCP5oGJaCE1icCR7EJusUrvCU-DBPNIXVElD7NdZnQbaiOl_lOa2bZsHl7hNZnVNmHdLlqO64T8evYnSUIr2atiXmo_b609E0FkNkrMMnVzfamY9qtXha8mtHU_DlS_PnBn7XqFOEU6QRNBzg9mLOwtwqMzyQNC_zS1IkwhpXUkcJNfwg7ep78GUtC2cmbeIeEF7Q'></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BLOCMATHS EQUATIONS</title>
+<style>
+  :root{
+    --grid: 24px;
+    --margin-mult: 4;
+    --margin-x: calc(var(--grid) * var(--margin-mult));
+    --safe-left: calc(var(--margin-x) + var(--grid));
+    --safe-right: calc(var(--grid) * 1);
+    --safe-top: calc(var(--grid) * 1);
+    --safe-bottom: calc(var(--grid) * 1);
+
+    --paper: rgb(248, 242, 232);
+    --ink: rgb(26, 26, 26);
+    --muted: rgb(92, 92, 92);
+
+    --card: rgb(255, 252, 247);
+    --cardBorder: rgb(220, 210, 195);
+    --shadow: 0 18px 40px rgba(0,0,0,.10);
+
+    /* 3 familles max */
+    --constBg: rgb(252, 215, 158);
+    --varBg:   rgb(144, 190, 255);
+    --neuBg:   rgb(236, 236, 236);
+
+    --constInk: rgb(28, 20, 10);
+    --varInk:   rgb(10, 22, 35);
+    --neuInk:   rgb(70, 70, 70);
+
+    --marginLine: rgb(225, 62, 62);
+
+    --r: 18px;
+
+    --eqZoom: 1.00; /* 0.70 -> 1.40 */
+    --eqBase: clamp(40px, 4.6vw, 64px);
+
+    --btn: rgb(244, 238, 228);
+    --btnHover: rgb(236, 228, 214);
+    --btnInk: rgb(30, 30, 30);
+
+    --good: rgb(33, 155, 105);
+    --bad: rgb(210, 60, 78);
+    --warn: rgb(210, 140, 40);
+    --accent: rgb(86, 130, 210);
+  }
+
+  @media (max-width: 520px){
+    :root{
+      --grid: 18px;
+      --margin-mult: 3;
+      --eqBase: clamp(34px, 6.3vw, 54px);
+      --r: 16px;
+    }
+  }
+
+  *{ box-sizing: border-box; }
+  html,body{ height:100%; }
+  body{
+    margin:0;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Noto Sans", "Apple Color Emoji","Segoe UI Emoji";
+    color: var(--ink);
+    background: var(--paper);
+    overflow-x:hidden;
+  }
+
+  /* quadrillage léger */
+  body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    background:
+      linear-gradient(to right, rgba(50,50,50,.055) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(50,50,50,.055) 1px, transparent 1px);
+    background-size: var(--grid) var(--grid);
+    mix-blend-mode: multiply;
+    opacity: .55;
+  }
+
+  /* marge cahier alignée sur carreau */
+  body::after{
+    content:"";
+    position:fixed;
+    top:0; bottom:0;
+    left: var(--margin-x);
+    width: 2px;
+    background: var(--marginLine);
+    opacity: .75;
+    pointer-events:none;
+  }
+
+  .safe{
+    min-height:100%;
+    padding-left: var(--safe-left);
+    padding-right: var(--safe-right);
+    padding-top: var(--safe-top);
+    padding-bottom: calc(var(--safe-bottom) + 72px);
+    display:flex;
+    flex-direction:column;
+    gap: calc(var(--grid) * .75);
+  }
+
+  header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap: 12px;
+    flex-wrap:wrap;
+  }
+  .title{
+    font-weight: 900;
+    letter-spacing: .6px;
+    font-size: clamp(18px, 2.2vw, 26px);
+    line-height:1.05;
+    user-select:none;
+  }
+  .topActions{
+    display:flex;
+    gap: 10px;
+    align-items:center;
+    flex-wrap:wrap;
+    justify-content:flex-end;
+  }
+
+  .bar{
+    display:flex;
+    gap: 8px;
+    align-items:center;
+    flex-wrap:wrap;
+  }
+
+  .btn{
+    border: 1px solid rgba(0,0,0,.12);
+    background: var(--btn);
+    color: var(--btnInk);
+    border-radius: 999px;
+    padding: 10px 12px;
+    font-weight: 700;
+    font-size: 14px;
+    cursor:pointer;
+    box-shadow: 0 8px 18px rgba(0,0,0,.06);
+    transition: transform .08s ease, background .12s ease, box-shadow .12s ease, opacity .12s ease;
+    user-select:none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .btn:hover{ background: var(--btnHover); }
+  .btn:active{ transform: translateY(1px); box-shadow: 0 5px 12px rgba(0,0,0,.06); }
+  .btn.primary{
+    background: rgb(224, 236, 255);
+    border-color: rgba(86,130,210,.35);
+  }
+  .btn.primary:hover{ background: rgb(212, 228, 255); }
+  .btn.danger{
+    background: rgb(255, 226, 230);
+    border-color: rgba(210,60,78,.35);
+  }
+  .btn.danger:hover{ background: rgb(255, 210, 218); }
+  .btn.tiny{
+    padding: 7px 9px;
+    font-size: 12px;
+    font-weight: 800;
+    box-shadow:none;
+  }
+  .btn.small{
+    padding: 8px 10px;
+    font-size: 13px;
+    font-weight: 800;
+  }
+  .btn.disabled, .btn:disabled{
+    opacity: .45;
+    cursor:not-allowed;
+    transform:none;
+  }
+
+  .chip{
+    border-radius: 999px;
+    padding: 8px 10px;
+    border: 1px solid rgba(0,0,0,.12);
+    background: rgba(255,255,255,.65);
+    font-weight: 800;
+    font-size: 13px;
+  }
+
+  .card{
+    background: var(--card);
+    border: 1px solid var(--cardBorder);
+    border-radius: calc(var(--r) + 6px);
+    box-shadow: var(--shadow);
+    padding: clamp(14px, 2vw, 18px);
+    display:flex;
+    flex-direction:column;
+    gap: 14px;
+  }
+
+  .homeHint{
+    color: var(--muted);
+    font-weight: 600;
+    line-height:1.35;
+  }
+
+  .eqWrap{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:100%;
+  }
+  .eqScroll{
+    width: 100%;
+    overflow-x:auto;
+    overflow-y:hidden;
+    padding: 10px 4px 12px 4px;
+    border-radius: var(--r);
+    background: rgba(255,255,255,.65);
+    border: 1px dashed rgba(0,0,0,.10);
+  }
+  .eq{
+    display:inline-flex;
+    align-items:center;
+    gap: 12px;
+    white-space:nowrap;
+    font-size: calc(var(--eqBase) * var(--eqZoom));
+    line-height:1.0;
+    transform-origin: left center;
+  }
+  .side{
+    display:inline-flex;
+    align-items:center;
+    gap: 10px;
+    padding: 8px 6px;
+    border-radius: var(--r);
+  }
+  .eqSep{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding: 0 8px;
+    font-weight: 900;
+    color: var(--neuInk);
+    border-radius: var(--r);
+    background: rgba(236,236,236,.65);
+    border: 1px solid rgba(0,0,0,.08);
+  }
+
+  /* blocs */
+  .blk{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding: 10px 14px;
+    border-radius: 16px;
+    border: 1px solid rgba(0,0,0,.10);
+    box-shadow: 0 10px 22px rgba(0,0,0,.08);
+    font-weight: 900;
+    letter-spacing: .2px;
+    user-select:none;
+    -webkit-tap-highlight-color: transparent;
+    cursor: default;
+    transform: translateZ(0);
+    transition: transform .10s ease, box-shadow .10s ease, filter .10s ease;
+  }
+  .blk.const{ background: var(--constBg); color: var(--constInk); }
+  .blk.var{ background: var(--varBg); color: var(--varInk); }
+  .blk.neu{ background: var(--neuBg); color: var(--neuInk); box-shadow:none; border-style:solid; }
+  .blk.neu.slim{ padding: 10px 12px; border-radius: 14px; }
+  .blk.neu.paren{ padding: 10px 10px; border-radius: 14px; }
+  .blk.flat{ box-shadow:none; }
+
+  .blk.draggable{ cursor: grab; }
+  .blk.draggable:active{ cursor: grabbing; }
+  .blk.draggable:hover{ transform: translateY(-1px); box-shadow: 0 14px 28px rgba(0,0,0,.10); }
+
+  .sign{
+    color: rgba(70,70,70,.92);
+    font-weight: 1000;
+    margin-right: 4px;
+  }
+  .opChar{
+    color: rgba(70,70,70,.92);
+    font-weight: 1000;
+  }
+
+  /* var term as pair */
+  .pair{
+    display:inline-flex;
+    align-items:center;
+    gap: 2px; /* quasi collé */
+  }
+  .coefTimes{
+    display:none; /* invisible au repos */
+  }
+  .coef.showTimes .coefTimes{
+    display:inline;
+  }
+
+  /* highlight aide */
+  .hl{
+    outline: 4px solid rgba(86,130,210,.35);
+    outline-offset: 3px;
+    filter: saturate(1.05);
+  }
+
+  /* mini barre sous équation */
+  .miniBar{
+    display:flex;
+    flex-wrap:wrap;
+    gap: 10px;
+    align-items:center;
+    justify-content:center;
+  }
+
+  .feedback{
+    display:flex;
+    flex-direction:column;
+    gap: 10px;
+  }
+  .msg{
+    padding: 12px 14px;
+    border-radius: var(--r);
+    border: 1px solid rgba(0,0,0,.10);
+    background: rgba(255,255,255,.75);
+    color: var(--ink);
+    font-weight: 700;
+    line-height:1.35;
+  }
+  .msg.good{ border-color: rgba(33,155,105,.28); }
+  .msg.bad{ border-color: rgba(210,60,78,.28); }
+  .msg.warn{ border-color: rgba(210,140,40,.28); }
+
+  .subtle{
+    color: var(--muted);
+    font-weight: 700;
+    font-size: 13px;
+  }
+
+  /* modals */
+  .overlay{
+    position:fixed;
+    inset:0;
+    background: rgba(0,0,0,.26);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding-left: var(--safe-left);
+    padding-right: var(--safe-right);
+    padding-top: var(--safe-top);
+    padding-bottom: var(--safe-bottom);
+    z-index: 50;
+  }
+  .overlay.on{ display:flex; }
+  .modal{
+    width:min(820px, 100%);
+    background: var(--card);
+    border: 1px solid var(--cardBorder);
+    border-radius: calc(var(--r) + 10px);
+    box-shadow: 0 20px 60px rgba(0,0,0,.18);
+    padding: 16px;
+    display:flex;
+    flex-direction:column;
+    gap: 12px;
+  }
+  .modal h3{
+    margin: 0;
+    font-size: 18px;
+    letter-spacing: .2px;
+  }
+  .modal .row{
+    display:flex;
+    gap: 10px;
+    flex-wrap:wrap;
+    align-items:center;
+  }
+  .modal .note{
+    color: var(--muted);
+    font-weight: 700;
+    line-height:1.35;
+  }
+  .x{ margin-left:auto; }
+  .divider{
+    height:1px;
+    background: rgba(0,0,0,.08);
+    margin: 6px 0;
+  }
+
+  /* flottant fullscreen */
+  .floatFS{
+    position:fixed;
+    right: calc(var(--safe-right) + 14px);
+    bottom: 14px;
+    z-index: 20;
+    display:flex;
+    gap: 10px;
+    align-items:center;
+  }
+
+  /* test */
+  .testList{
+    display:flex;
+    flex-direction:column;
+    gap: 10px;
+  }
+  .qRow{
+    display:grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 10px;
+    align-items:center;
+    padding: 12px 12px;
+    border-radius: var(--r);
+    border: 1px solid rgba(0,0,0,.10);
+    background: rgba(255,255,255,.75);
+  }
+  .qIdx{
+    font-weight: 1000;
+    color: rgba(40,40,40,.85);
+    min-width: 30px;
+    text-align:right;
+  }
+  .qEq{
+    font-weight: 900;
+    letter-spacing: .2px;
+    overflow-x:auto;
+    white-space:nowrap;
+  }
+  .qAns{
+    display:flex;
+    align-items:center;
+    gap: 8px;
+    white-space:nowrap;
+    font-weight: 900;
+  }
+  input[type="text"]{
+    width: 110px;
+    padding: 10px 10px;
+    border-radius: 12px;
+    border: 1px solid rgba(0,0,0,.18);
+    background: rgba(255,255,255,.92);
+    font-weight: 900;
+    font-size: 14px;
+    outline:none;
+  }
+  input[type="text"]:focus{
+    border-color: rgba(86,130,210,.55);
+    box-shadow: 0 0 0 4px rgba(86,130,210,.14);
+  }
+  .mark{
+    font-weight: 1000;
+    padding: 8px 10px;
+    border-radius: 999px;
+    border: 1px solid rgba(0,0,0,.10);
+    background: rgba(255,255,255,.72);
+  }
+  .mark.good{ border-color: rgba(33,155,105,.28); color: var(--good); }
+  .mark.bad{ border-color: rgba(210,60,78,.28); color: var(--bad); }
+
+  .tinyLink{
+    font-size: 12px;
+    font-weight: 800;
+    opacity: .35;
+    color: rgba(0,0,0,.85);
+    text-decoration:none;
+  }
+  .tinyLink:hover{ opacity: .7; text-decoration:underline; }
+
+  /* drag ghost — pointeur sur l’extrémité droite */
+  #dragGhost{
+    position:fixed;
+    pointer-events:none;
+    z-index: 100;
+    transform: translate(calc(-100% - 6px), -50%);
+    filter: drop-shadow(0 18px 34px rgba(0,0,0,.22));
+    display:none;
+  }
+  #dragGhost.on{ display:block; }
+</style>
+</head>
+<body>
+  <div class="safe" id="app">
+    <header>
+      <div class="title">BLOCMATHS EQUATIONS</div>
+
+      <div class="topActions">
+        <div class="bar" id="levelBar"><div class="bar"><button class="btn small">N1</button><button class="btn small">N2</button><button class="btn small">N3</button><button class="btn small">N4</button><button class="btn small">N5</button><button class="btn small primary">TEST</button></div></div>
+        <div class="bar">
+          <button class="btn small" id="btnFSHead" title="Plein écran">Plein écran</button>
+          <button class="btn small" id="btnExport" title="Télécharger un HTML autonome">Export HTML</button>
+        </div>
+      </div>
+    </header>
+
+    <main id="main"><div class="card"><div class="homeHint">Choisis un niveau ou lance un <b>TEST</b>. Tu manipules les blocs pour résoudre <b>pas à pas</b>.</div><div class="bar" style="flex-wrap:wrap;gap:10px"><button class="btn primary">Niveau 1</button><button class="btn primary">Niveau 2</button><button class="btn primary">Niveau 3</button><button class="btn primary">Niveau 4</button><button class="btn primary">Niveau 5</button><button class="btn">TEST</button></div><div class="bar" style="flex-wrap:wrap;gap:10px"><button class="btn">Plein écran</button><button class="btn">Export HTML</button></div><div style="display:flex;justify-content:flex-end"><a class="tinyLink" href="https://www.linkedin.com/in/tomrougeaud" target="_blank" rel="noopener noreferrer">Tom Rougeaud</a></div></div></main>
+  </div>
+
+  <div class="floatFS">
+    <button class="btn small" id="btnFSFloat" title="Plein écran">⛶</button>
+  </div>
+
+  <!-- Overlays -->
+  <div class="overlay" id="ovFS">
+    <div class="modal">
+      <div class="row">
+        <h3>Plein écran ?</h3>
+        <button class="btn tiny x" id="closeFS">✕</button>
+      </div>
+      <div class="note">Pour une meilleure lisibilité des blocs et de l’équation.</div>
+      <div class="row">
+        <button class="btn primary" id="goFS">Activer plein écran</button>
+        <button class="btn" id="laterFS">Plus tard</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="overlay" id="ovWin">
+    <div class="modal">
+      <div class="row">
+        <h3>Bravo 🎉</h3>
+        <button class="btn tiny x" id="closeWin">✕</button>
+      </div>
+      <div class="note">Tu as isolé <b>a</b> et tout est réduit.</div>
+      <div class="row">
+        <button class="btn primary" id="winSame">Continuer ce niveau</button>
+        <button class="btn" id="winUp">Passer à un niveau supérieur</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="overlay" id="ovProf">
+    <div class="modal">
+      <div class="row">
+        <h3>Mode Prof</h3>
+        <button class="btn tiny x" id="closeProf">✕</button>
+      </div>
+
+      <div class="row">
+        <button class="btn primary" id="profAuto">Correction automatique</button>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="note"><b>Paramétrer le test</b> (et la génération) :</div>
+
+      <div class="row" style="align-items:flex-start;gap:14px">
+        <div style="min-width:220px">
+          <div class="subtle" style="margin-bottom:6px">Forcer niveaux :</div>
+          <div class="row" style="gap:8px">
+            <label class="chip"><input type="checkbox" id="pN1"> N1</label>
+            <label class="chip"><input type="checkbox" id="pN2"> N2</label>
+            <label class="chip"><input type="checkbox" id="pN3"> N3</label>
+            <label class="chip"><input type="checkbox" id="pN4"> N4</label>
+            <label class="chip"><input type="checkbox" id="pN5"> N5</label>
+          </div>
+        </div>
+
+        <div style="flex:1">
+          <div class="row" style="gap:10px">
+            <label class="chip"><input type="checkbox" id="pNoNeg"> Enlever termes négatifs</label>
+            <label class="chip"><input type="checkbox" id="pNoFrac"> Enlever fractions</label>
+          </div>
+          <div class="row" style="gap:10px;margin-top:8px">
+            <label class="chip"><input type="checkbox" id="pAddTerms"> Rajouter des termes</label>
+            <label class="chip"><input type="checkbox" id="pAddFacts"> Rajouter des facteurs</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+      <div class="note">Raccourcis : <b>+++</b> → ajoute des termes • <b>---</b> → enlève des termes</div>
+
+      <div class="row">
+        <button class="btn" id="profSave">Enregistrer</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="overlay" id="ovAuto">
+    <div class="modal">
+      <div class="row">
+        <h3>Correction automatique</h3>
+        <button class="btn tiny x" id="closeAuto">✕</button>
+      </div>
+      <div id="autoBody" class="feedback"></div>
+    </div>
+  </div>
+
+  <div id="dragGhost"></div>
+
+<script>
+/* =========================================================
+   BLOCMATHS EQUATIONS — V2.5 (modifs demandées)
+   - Affichage des résultats : décimal si possible (obligatoire si entier ou ≤2 décimales exactes),
+     sinon fraction irréductible.
+   - Drag : pointeur à l’extrémité droite du bloc (ghost décalé).
+   - N4 et N5 : taille "comme N3" ; différence N4 vs N5 : N5 ajoute des fractions (souvent).
+   - Coef drag : a reste visible (on ne déplace pas "ka", on déplace k).
+   - Cheatcodes : 194 (prof), +++ ajoute, --- enlève (jusqu’au minimum type N1).
+   - Export TEST en Excel (.xls HTML) : cellule TOTAL =SOMME(...)
+   ========================================================= */
+
+/* ---------- Export state placeholder (remplacé à l’export) ---------- */
+const EXPORTED_STATE = {"version":"2.5","when":1770643284162,"zoom":0.7,"prof":{"forceLevels":[],"noNegatives":false,"noFractions":false,"addTerms":false,"addFactors":false},"mode":"HOME","level":1,"game":null,"test":null};
+
+/* ---------- Helpers : localStorage ---------- */
+const LS = {
+  get(k, d=null){ try{ const v = localStorage.getItem(k); return v==null? d : JSON.parse(v);}catch(e){ return d; } },
+  set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
+};
+
+/* ---------- Helpers : random ---------- */
+const RNG = {
+  int(min,max){ return Math.floor(Math.random()*(max-min+1))+min; },
+  pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; },
+  chance(p){ return Math.random()<p; },
+  shuffle(a){
+    for(let i=a.length-1;i>0;i--){
+      const j=Math.floor(Math.random()*(i+1));
+      [a[i],a[j]]=[a[j],a[i]];
+    }
+    return a;
+  }
+};
+
+/* =========================================================
+   Fractions
+========================================================= */
+function igcd(a,b){
+  a=Math.abs(a); b=Math.abs(b);
+  while(b){ const t=a%b; a=b; b=t; }
+  return a||1;
+}
+function normF(f){
+  if(f.d<0){ f.n=-f.n; f.d=-f.d; }
+  if(f.d===0){ f.n=0; f.d=1; }
+  if(f.n===0){ f.d=1; }
+  return f;
+}
+function F(n,d=1){ return normF({n:Math.trunc(n), d:Math.trunc(d)}); }
+function cloneF(f){ return {n:f.n, d:f.d}; }
+function absF(f){ return {n:Math.abs(f.n), d:f.d}; }
+function reduceF(f){
+  const g=igcd(f.n, f.d);
+  if(g>1){ f.n/=g; f.d/=g; }
+  return normF(f);
+}
+function canReduceF(f){
+  if(f.d===1) return false;
+  return igcd(f.n, f.d)>1;
+}
+function addF(a,b){ return normF({n: a.n*b.d + b.n*a.d, d: a.d*b.d}); }
+function subF(a,b){ return normF({n: a.n*b.d - b.n*a.d, d: a.d*b.d}); }
+function mulF(a,b){ return normF({n: a.n*b.n, d: a.d*b.d}); }
+function divF(a,b){ return normF({n: a.n*b.d, d: a.d*b.n}); }
+function eqF(a,b){
+  const A=reduceF({n:a.n, d:a.d});
+  const B=reduceF({n:b.n, d:b.d});
+  return A.n===B.n && A.d===B.d;
+}
+function toNumF(f){ return f.n / f.d; }
+function fmtFrac(f){
+  if(f.d===1) return String(f.n);
+  return `${f.n}/${f.d}`;
+}
+function fmtAbsFrac(f){
+  const af=absF(f);
+  if(af.d===1) return String(af.n);
+  return `${af.n}/${af.d}`;
+}
+function fmtMaybeParenSignedF(f){
+  if(f.n<0){
+    const af=absF(f);
+    const inner = af.d===1 ? String(af.n) : `${af.n}/${af.d}`;
+    return `(-${inner})`;
+  }
+  return fmtFrac(f);
+}
+
+/* ----- Affichage "résultats" : décimal si exact sur 100, sinon fraction irréductible ----- */
+function fmtDecOrFrac(f){
+  const r = reduceF({n:f.n, d:f.d});
+  // décimal obligatoire si entier
+  if(r.d===1) return String(r.n);
+  // décimal obligatoire si EXACT avec <=2 décimales
+  const scaled = r.n * 100;
+  if(scaled % r.d === 0){
+    const v100 = scaled / r.d; // entier
+    const sign = v100<0 ? "-" : "";
+    const a = Math.abs(v100);
+    const ip = Math.floor(a/100);
+    const fp = a % 100;
+    if(fp===0) return sign + String(ip);
+    if(fp % 10 === 0){
+      const d1 = Math.floor(fp/10);
+      return sign + String(ip) + "," + String(d1);
+    }
+    const s2 = fp.toString().padStart(2,"0");
+    return sign + String(ip) + "," + s2;
+  }
+  // sinon fraction irréductible
+  return (r.d===1) ? String(r.n) : `${r.n}/${r.d}`;
+}
+/* affichage valeurs absolues dans les blocs (on gère le signe à part) */
+function fmtAbsDisplay(f){
+  const af = absF(f);
+  const s = fmtDecOrFrac(af);
+  // s peut contenir un signe "-" si af était négatif (normalement non)
+  return s.startsWith("-") ? s.slice(1) : s;
+}
+
+/* =========================================================
+   Parse réponse élève (TEST)
+========================================================= */
+function parseAnswer(str){
+  if(!str) return null;
+  const s = str.trim().replace(/\s+/g,"").replace(",",".");
+  if(!s) return null;
+  if(/^[-+]?\d+\/\d+$/.test(s)){
+    const [a,b]=s.split("/");
+    const n=parseInt(a,10), d=parseInt(b,10);
+    if(!Number.isFinite(n)||!Number.isFinite(d)||d===0) return null;
+    return reduceF({n, d});
+  }
+  if(/^[-+]?\d+(\.\d+)?$/.test(s)){
+    const x = Number(s);
+    if(!Number.isFinite(x)) return null;
+    const neg = x<0;
+    const ax = Math.abs(x);
+    const s2 = String(ax);
+    if(s2.includes("e") || s2.includes("E")){
+      return reduceF({n: Math.round(x*1000000), d: 1000000});
+    }
+    const parts = s2.split(".");
+    if(parts.length===1){
+      return reduceF({n: Math.trunc(x), d: 1});
+    }
+    const dec = parts[1];
+    const d = Math.pow(10, dec.length);
+    const n = Math.round(ax*d);
+    const f = reduceF({n: neg?-n:n, d});
+    return f;
+  }
+  return null;
+}
+
+/* ---------- Deep clone ---------- */
+function deepClone(o){ return structuredClone(o); }
+
+/* ---------- IDs ---------- */
+function uid(prefix="id"){
+  return prefix + "_" + Math.random().toString(16).slice(2) + "_" + Date.now().toString(16);
+}
+
+/* ---------- Prof params ---------- */
+const DEFAULT_PROF = {
+  forceLevels: [],
+  noNegatives: false,
+  noFractions: false,
+  addTerms: false,
+  addFactors: false
+};
+
+/* ---------- State ---------- */
+const STATE = {
+  mode: "HOME",
+  level: 1,
+  eq: null,
+  undo: [],
+  help: { on:false, suggested:null },
+  toast: { text:"", kind:"" },
+
+  test: {
+    items: [],
+    validated: false,
+    totalPoints: 0,
+    note20: 0
+  },
+
+  prof: LS.get("bmeq_prof", DEFAULT_PROF),
+  zoom: LS.get("bmeq_zoom", 1.0),
+  fsPromptDone: LS.get("bmeq_fs_prompt_done", false)
+};
+
+/* Apply zoom */
+function applyZoom(){
+  const z = Math.max(0.70, Math.min(1.40, STATE.zoom));
+  document.documentElement.style.setProperty("--eqZoom", z.toFixed(2));
+}
+
+/* ---------- UI refs ---------- */
+const main = document.getElementById("main");
+const levelBar = document.getElementById("levelBar");
+
+const ovFS = document.getElementById("ovFS");
+const ovWin = document.getElementById("ovWin");
+const ovProf = document.getElementById("ovProf");
+const ovAuto = document.getElementById("ovAuto");
+
+const dragGhost = document.getElementById("dragGhost");
+
+/* ---------- Fullscreen ---------- */
+async function toggleFullscreen(){
+  const el = document.documentElement;
+  const isFS = !!document.fullscreenElement;
+  try{
+    if(!isFS) await el.requestFullscreen();
+    else await document.exitFullscreen();
+  }catch(e){}
+}
+
+/* ---------- Modals ---------- */
+function openWin(){ ovWin.classList.add("on"); }
+function closeWin(){ ovWin.classList.remove("on"); }
+function openProf(){ ovProf.classList.add("on"); syncProfUI(); }
+function closeProf(){ ovProf.classList.remove("on"); }
+function openAuto(){ ovAuto.classList.add("on"); }
+function closeAuto(){ ovAuto.classList.remove("on"); }
+
+/* ---------- Toast ---------- */
+function setToast(text, kind=""){
+  STATE.toast.text=text;
+  STATE.toast.kind=kind;
+  render();
+  if(text){
+    clearTimeout(setToast._t);
+    setToast._t=setTimeout(()=>{
+      STATE.toast.text="";
+      STATE.toast.kind="";
+      render();
+    }, 2200);
+  }
+}
+
+/* =========================================================
+   Equation model
+========================================================= */
+function makeTermConst(absVal){ return { type:"term", t:"const", v: absVal }; }
+function makeTermVar(absCoeff){ return { type:"term", t:"var", v: absCoeff }; }
+function makeProduct(leftTerm, rightConst){ return { type:"product", left:leftTerm, right:rightConst }; }
+function makeGroup(factorAbs, innerParts){ return { type:"group", factor: factorAbs, inner: innerParts }; }
+
+function signedPart(sign, part){
+  return { id: uid("p"), sign, part };
+}
+function side(parts, divTail=null){
+  return { parts, divTail };
+}
+
+/* ---------- Linearization ---------- */
+function linPart(part){
+  if(part.type==="term"){
+    if(part.t==="const") return { a:F(0,1), c:cloneF(part.v) };
+    return { a:cloneF(part.v), c:F(0,1) };
+  }
+  if(part.type==="product"){
+    if(part.left.t==="const"){
+      return { a:F(0,1), c: mulF(part.left.v, part.right) };
+    }
+    return { a: mulF(part.left.v, part.right), c:F(0,1) };
+  }
+  if(part.type==="group"){
+    let a=F(0,1), c=F(0,1);
+    for(const sp of part.inner){
+      const lc = linPart(sp.part);
+      const sgn = sp.sign;
+      const a2 = sgn===1 ? lc.a : {n:-lc.a.n, d:lc.a.d};
+      const c2 = sgn===1 ? lc.c : {n:-lc.c.n, d:lc.c.d};
+      a = addF(a, a2);
+      c = addF(c, c2);
+    }
+    a = mulF(a, part.factor);
+    c = mulF(c, part.factor);
+    return {a, c};
+  }
+  return {a:F(0,1), c:F(0,1)};
+}
+function linSide(s){
+  let a=F(0,1), c=F(0,1);
+  for(const sp of s.parts){
+    const lc = linPart(sp.part);
+    const sgn = sp.sign;
+    const a2 = sgn===1 ? lc.a : {n:-lc.a.n, d:lc.a.d};
+    const c2 = sgn===1 ? lc.c : {n:-lc.c.n, d:lc.c.d};
+    a = addF(a, a2);
+    c = addF(c, c2);
+  }
+  if(s.divTail){
+    a = divF(a, s.divTail);
+    c = divF(c, s.divTail);
+  }
+  return {a, c};
+}
+function solveEquation(eq){
+  const L=linSide(eq.left);
+  const R=linSide(eq.right);
+  const denom = subF(L.a, R.a);
+  const num = subF(R.c, L.c);
+  if(denom.n===0) return null;
+  const sol = divF(num, denom);
+  return reduceF(sol);
+}
+
+/* ---------- Pretty equation string (TEST / affichage énoncé) ---------- */
+/* Ici on garde la forme fractionnaire pour les fractions (N5) */
+function partToText(sp, isFirst=false){
+  const sign = sp.sign;
+  const part = sp.part;
+  const sgnText = (isFirst ? (sign===-1 ? "-" : "") : (sign===1 ? "+" : "-"));
+  function tTerm(t, v){
+    if(t==="const") return fmtAbsFrac(v);
+    const coeff = v;
+    const coeffIsOne = (coeff.n===1 && coeff.d===1);
+    if(coeffIsOne) return "a";
+    return `${fmtAbsFrac(coeff)}a`;
+  }
+  if(part.type==="term"){
+    return sgnText + tTerm(part.t, part.v);
+  }
+  if(part.type==="product"){
+    const left = tTerm(part.left.t, part.left.v);
+    const right = fmtAbsFrac(part.right);
+    return sgnText + left + "×" + right;
+  }
+  if(part.type==="group"){
+    const k = fmtAbsFrac(part.factor);
+    let inside="";
+    part.inner.forEach((ip,idx)=>{ inside += partToText(ip, idx===0); });
+    return sgnText + k + "(" + inside + ")";
+  }
+  return sgnText + "?";
+}
+function sideToText(s){
+  let txt="";
+  s.parts.forEach((sp, idx)=>{ txt += partToText(sp, idx===0); });
+  if(!txt) txt="0";
+  if(s.divTail){
+    const k = fmtMaybeParenSignedF(s.divTail);
+    txt += "÷" + k;
+  }
+  return txt;
+}
+function eqToText(eq){
+  return sideToText(eq.left) + " = " + sideToText(eq.right);
+}
+
+/* =========================================================
+   Generator (N4 & N5 mêmes tailles ; N5 ajoute des fractions)
+========================================================= */
+function randSign(){
+  if(STATE.prof.noNegatives) return 1;
+  return RNG.pick([1,-1]);
+}
+function randIntNonZero(min,max){
+  let x=0, tries=0;
+  while(x===0 && tries<50){
+    x = RNG.int(min,max);
+    tries++;
+  }
+  if(x===0) x=1;
+  return x;
+}
+
+/* valeurs "abs" selon niveau */
+function absInt(min,max){ return F(RNG.int(min,max),1); }
+
+function absMaybeFrac(level, preferFrac=false){
+  const noFrac = STATE.prof.noFractions;
+  const allowFrac = (level>=5) && !noFrac;
+  const p = allowFrac ? (preferFrac ? 0.55 : 0.35) : 0.0;
+
+  if(allowFrac && RNG.chance(p)){
+    const d = RNG.int(2,8);
+    const nAbs = RNG.int(1,9);
+    // parfois une fraction reducible pour forcer une étape de réduction visible
+    if(RNG.chance(0.25)){
+      const g = RNG.pick([2,3]);
+      return normF({n:nAbs*g, d:d*g});
+    }
+    return normF({n:nAbs, d});
+  }
+  return absInt(1,12);
+}
+
+function makeVarPart(level){
+  // coefficient abs
+  const coeffAbs = (level>=5) ? absMaybeFrac(level, true) : absInt(1,9);
+  return makeTermVar(coeffAbs);
+}
+function makeConstPart(level){
+  const vAbs = (level>=5) ? absMaybeFrac(level, true) : absInt(1,20);
+  return makeTermConst(vAbs);
+}
+
+function genInner(level, mustHaveVar=false){
+  const n = RNG.int(2,3); // petit
+  const inner=[];
+  if(mustHaveVar){
+    inner.push(signedPart(randSign(), makeVarPart(level)));
+  }
+  while(inner.length<n){
+    const pickVar = RNG.chance(0.45);
+    const part = pickVar ? makeVarPart(level) : makeConstPart(level);
+    inner.push(signedPart(randSign(), part));
+  }
+  RNG.shuffle(inner);
+  return inner;
+}
+
+function genGroup(level, mustHaveVar=true){
+  const factorAbs = (level>=5) ? absMaybeFrac(level, true) : absInt(2,6);
+  return makeGroup(factorAbs, genInner(level, mustHaveVar));
+}
+
+function pruneTrivial(eq){
+  // éviter a déjà isolé en "a = const"
+  if(eq.left.parts.length===1 && eq.left.parts[0].part.type==="term" && eq.left.parts[0].part.t==="var"
+     && eq.left.parts[0].sign===1
+     && eq.left.parts[0].part.v.n===1 && eq.left.parts[0].part.v.d===1
+     && !eq.left.divTail
+     && eq.right.parts.length===1 && eq.right.parts[0].part.type==="term" && eq.right.parts[0].part.t==="const"
+     && !eq.right.divTail){
+    return false;
+  }
+  return true;
+}
+
+function genEquationN4orN5(level){
+  // Taille comme N3 :
+  const leftCount = RNG.int(3,4);
+  const rightCount = RNG.int(1,2);
+
+  const wantMoreFactors = STATE.prof.addFactors || (level>=4);
+  const wantGroupOnRight = RNG.chance(wantMoreFactors ? 0.45 : 0.30);
+
+  let tries=0;
+  while(tries<900){
+    tries++;
+
+    const leftParts = [];
+    const rightParts = [];
+
+    // au moins une parenthèse (développement via Réduire)
+    leftParts.push(signedPart(randSign(), genGroup(level, true)));
+    if(wantGroupOnRight){
+      rightParts.push(signedPart(randSign(), genGroup(level, true)));
+    }
+
+    while(leftParts.length < leftCount){
+      const pickGroup = wantMoreFactors && RNG.chance(0.22) && leftParts.filter(p=>p.part.type==="group").length<2;
+      const part = pickGroup ? genGroup(level, true) : (RNG.chance(0.45) ? makeVarPart(level) : makeConstPart(level));
+      leftParts.push(signedPart(randSign(), part));
+    }
+
+    while(rightParts.length < rightCount){
+      const pickGroup = wantMoreFactors && RNG.chance(0.18) && rightParts.filter(p=>p.part.type==="group").length<2;
+      const part = pickGroup ? genGroup(level, true) : (RNG.chance(0.35) ? makeVarPart(level) : makeConstPart(level));
+      rightParts.push(signedPart(randSign(), part));
+    }
+
+    // garder un total de parenthèses raisonnable
+    const gTotal = leftParts.filter(p=>p.part.type==="group").length + rightParts.filter(p=>p.part.type==="group").length;
+    if(gTotal<1) continue;
+
+    const eq = { left: side(leftParts, null), right: side(rightParts, null), level };
+    const sol = solveEquation(eq);
+    if(!sol) continue;
+
+    // si N5, on veut "souvent" des fractions : au moins une fraction dans l'équation OU dans la solution
+    if(level>=5 && !STATE.prof.noFractions){
+      const hasFracInEq =
+        [eq.left, eq.right].some(s => s.parts.some(sp=>{
+          const p=sp.part;
+          if(p.type==="term") return p.v.d!==1;
+          if(p.type==="group") return p.factor.d!==1 || p.inner.some(ip=>ip.part.type==="term" && ip.part.v.d!==1);
+          return false;
+        }));
+      const hasFracSol = sol.d!==1 && ( (sol.n*100) % sol.d !== 0 ); // pas décimal sur 2 chiffres
+      // on ne force pas à 100%, juste "souvent"
+      if(!hasFracInEq && !hasFracSol && RNG.chance(0.65)) continue;
+    }
+
+    const ax = Math.abs(toNumF(sol));
+    if(!Number.isFinite(ax) || ax>200) continue;
+    if(!pruneTrivial(eq)) continue;
+
+    // éviter trop "a isolé vite"
+    const L = linSide(eq.left), R = linSide(eq.right);
+    if(eq.left.parts.length===1 && L.a.n===1 && L.a.d===1 && R.a.n===0) continue;
+
+    return eq;
+  }
+
+  // fallback
+  const g = makeGroup(absInt(3,3), [signedPart(1, makeTermVar(absInt(2,2))), signedPart(-1, makeTermConst(absInt(5,5)))]);
+  return {
+    left: side([signedPart(1,g), signedPart(1, makeTermConst(absInt(4,4))), signedPart(-1, makeTermVar(absInt(1,1)))], null),
+    right: side([signedPart(1, makeTermConst(absInt(7,7)))], null),
+    level
+  };
+}
+
+function generateEquation(level){
+  if(level===1){
+    const bAbs = absInt(2,12);
+    const cAbs = absInt(2,20);
+    const bSign = randSign();
+    const cSign = randSign();
+    const left = side([
+      signedPart(1, makeTermVar(F(1,1))),
+      signedPart(bSign, makeTermConst(bAbs))
+    ]);
+    const right = side([ signedPart(cSign, makeTermConst(cAbs)) ]);
+    return { left, right, level };
+  }
+  if(level===2){
+    const kAbs = absInt(2,9);
+    const kSign = randSign();
+    const bAbs = absInt(2,14);
+    const cAbs = absInt(2,22);
+    const bSign = randSign();
+    const cSign = randSign();
+    const left = side([
+      signedPart(kSign, makeTermVar(kAbs)),
+      signedPart(bSign, makeTermConst(bAbs))
+    ]);
+    const right = side([ signedPart(cSign, makeTermConst(cAbs)) ]);
+    return { left, right, level };
+  }
+  if(level===3){
+    let tries=0;
+    while(tries<400){
+      tries++;
+      const leftCount = RNG.int(3,4);
+      const leftParts = [];
+      while(leftParts.length < leftCount){
+        const pickVar = RNG.chance(0.30);
+        const part = pickVar ? makeVarPart(3) : makeConstPart(3);
+        leftParts.push(signedPart(randSign(), part));
+      }
+      if(!leftParts.some(sp => sp.part.type==="term" && sp.part.t==="var")){
+        leftParts[RNG.int(0,leftParts.length-1)] = signedPart(randSign(), makeVarPart(3));
+      }
+      const rightCount = RNG.int(1,2);
+      const rightParts = [];
+      for(let i=0;i<rightCount;i++){
+        rightParts.push(signedPart(randSign(), makeConstPart(3)));
+      }
+      const eq = { left: side(leftParts, null), right: side(rightParts, null), level:3 };
+      const sol = solveEquation(eq);
+      if(!sol) continue;
+      if(!pruneTrivial(eq)) continue;
+      const ax = Math.abs(toNumF(sol));
+      if(!Number.isFinite(ax) || ax>160) continue;
+      return eq;
+    }
+  }
+  if(level===4) return genEquationN4orN5(4);
+  if(level===5) return genEquationN4orN5(5);
+
+  return genEquationN4orN5(level);
+}
+
+/* =========================================================
+   DOM helpers
+========================================================= */
+function create(tag, attrs={}, children=[]){
+  const el = document.createElement(tag);
+  for(const [k,v] of Object.entries(attrs)){
+    if(k==="class") el.className=v;
+    else if(k==="html") el.innerHTML=v;
+    else if(k==="text") el.textContent=v;
+    else if(k.startsWith("on") && typeof v==="function") el.addEventListener(k.slice(2), v);
+    else if(k==="style") el.setAttribute("style", v);
+    else el.setAttribute(k, v);
+  }
+  for(const ch of children){
+    if(ch==null) continue;
+    el.appendChild(ch);
+  }
+  return el;
+}
+function blockSpanSign(signText){ return create("span", {class:"sign", text: signText}); }
+function blockSpanOp(char){ return create("span", {class:"opChar", text: char}); }
+
+/* =========================================================
+   Mechanics
+========================================================= */
+function pushUndo(){
+  if(STATE.mode!=="GAME") return;
+  STATE.undo.push(deepClone(STATE.eq));
+  if(STATE.undo.length>80) STATE.undo.shift();
+}
+function undo(){
+  if(STATE.mode!=="GAME") return;
+  const prev = STATE.undo.pop();
+  if(!prev){ setToast("Rien à annuler.", "warn"); return; }
+  STATE.eq = prev;
+  STATE.help.suggested = null;
+  setToast("Action annulée.", "");
+  render();
+}
+
+function invertSign(sp){
+  const cp = deepClone(sp);
+  cp.sign *= -1;
+  cp.id = uid("p");
+  return cp;
+}
+function findPartById(s, partId){
+  const idx = s.parts.findIndex(p => p.id===partId);
+  if(idx<0) return null;
+  return { idx, sp: s.parts[idx] };
+}
+
+/* ---------- Drag conditions ---------- */
+function canCoefMoveFromSide(s){
+  // Autorisé seulement si le membre contient exactement ka (un seul terme var avec coeff != ±1) et pas de divTail
+  if(s.divTail) return false;
+  if(s.parts.length!==1) return false;
+  const sp = s.parts[0];
+  const p = sp.part;
+  if(p.type!=="term" || p.t!=="var") return false;
+  const v=p.v;
+  if(v.n===1 && v.d===1) return false; // 1a => pas de coef à déplacer
+  return true;
+}
+function isOnlyA(s){
+  return !s.divTail &&
+    s.parts.length===1 &&
+    s.parts[0].part.type==="term" &&
+    s.parts[0].part.t==="var" &&
+    s.parts[0].sign===1 &&
+    s.parts[0].part.v.n===1 &&
+    s.parts[0].part.v.d===1;
+}
+
+/* ---------- Minimal eq "type N1" for '---' limit ---------- */
+function isAtMostLevel1(eq){
+  if(eq.left.divTail || eq.right.divTail) return false;
+  const hasComplex = (side)=> side.parts.some(sp => sp.part.type!=="term");
+  if(hasComplex(eq.left) || hasComplex(eq.right)) return false;
+
+  if(eq.right.parts.length!==1) return false;
+  const R = eq.right.parts[0];
+  if(!(R.part.type==="term" && R.part.t==="const")) return false;
+
+  const vars = eq.left.parts.filter(sp => sp.part.type==="term" && sp.part.t==="var");
+  if(vars.length!==1) return false;
+  const v = vars[0];
+  if(!(v.sign===1 && v.part.v.n===1 && v.part.v.d===1)) return false;
+
+  const others = eq.left.parts.length - 1;
+  if(others<0 || others>1) return false;
+  if(others===1){
+    const c = eq.left.parts.find(sp => sp.part.type==="term" && sp.part.t==="const");
+    if(!c) return false;
+  }
+  if(eq.right.parts.some(sp => sp.part.type==="term" && sp.part.t==="var")) return false;
+  return true;
+}
+
+/* =========================================================
+   Rendering blocks
+========================================================= */
+function renderTermBlocks(sp, options){
+  const { draggable, dragType, highlight, coefOnlyAllowed, isFirst } = options;
+
+  const sign = sp.sign;
+  const part = sp.part;
+
+  const showPlus = !isFirst;
+  const signChar = sign===-1 ? "−" : "+";
+  const signNode = showPlus ? blockSpanSign(signChar) : (sign===-1 ? blockSpanSign("−") : null);
+
+  function blk(cls, extraClass=""){
+    return create("div", {class:`blk ${cls} ${extraClass}`.trim()});
+  }
+
+  if(part.type==="term"){
+    if(part.t==="const"){
+      const valText = fmtAbsDisplay(part.v);  // <-- affichage résultat (décimal si possible)
+      const b = blk("const", draggable ? "draggable" : "");
+      if(draggable){
+        b.dataset.dragType = dragType;
+        b.dataset.partId = sp.id;
+      }
+      if(highlight) b.classList.add("hl");
+      if(signNode) b.appendChild(signNode);
+      b.appendChild(create("span", {text: valText}));
+      return b;
+    }
+
+    // VAR term
+    const coeffAbs = part.v;
+    const coeffIsOne = (coeffAbs.n===1 && coeffAbs.d===1);
+
+    if(coeffIsOne){
+      const b = blk("var", draggable ? "draggable" : "");
+      if(draggable){
+        b.dataset.dragType = dragType;
+        b.dataset.partId = sp.id;
+      }
+      if(highlight) b.classList.add("hl");
+      if(signNode) b.appendChild(signNode);
+      b.appendChild(create("span", {text:"a"}));
+      return b;
+    }
+
+    // pair [k][a]
+    const wrap = create("div", {class:"pair"});
+    if(draggable && dragType==="part"){
+      wrap.classList.add("draggable");
+      wrap.style.cursor = "grab";
+      wrap.dataset.dragType = dragType;
+      wrap.dataset.partId = sp.id;
+    }
+    if(highlight) wrap.classList.add("hl");
+
+    const coefBlk = create("div", {class:"blk var coef"});
+    if(coefOnlyAllowed){
+      coefBlk.classList.add("draggable");
+      coefBlk.dataset.dragType = "coef";
+      coefBlk.dataset.partId = sp.id;
+      coefBlk.style.cursor = "grab";
+    }
+    if(signNode){
+      coefBlk.appendChild(signNode);
+    }else if(sign===-1 && isFirst){
+      coefBlk.appendChild(blockSpanSign("−"));
+    }else if(showPlus){
+      coefBlk.appendChild(blockSpanSign(signChar));
+    }
+
+    // affichage k (abs) : décimal si possible
+    coefBlk.appendChild(create("span", {text: fmtAbsDisplay(coeffAbs)}));
+
+    const times = create("span", {class:"coefTimes"});
+    times.appendChild(blockSpanOp("×"));
+    coefBlk.appendChild(times);
+
+    const aBlk = create("div", {class:"blk var flat aBlock"});
+    aBlk.appendChild(create("span", {text:"a"}));
+
+    wrap.appendChild(coefBlk);
+    wrap.appendChild(aBlk);
+    return wrap;
+  }
+
+  if(part.type==="product"){
+    const wrap = create("div", {class:"pair"});
+    if(draggable){
+      wrap.classList.add("draggable");
+      wrap.style.cursor = "grab";
+      wrap.dataset.dragType = dragType;
+      wrap.dataset.partId = sp.id;
+    }
+    if(highlight) wrap.classList.add("hl");
+
+    // left term (const or var)
+    const leftTerm = { id: sp.id+"_L", sign: sp.sign, part: {type:"term", t: part.left.t, v: part.left.v} };
+    const leftNode = renderTermBlocks(leftTerm, {draggable:false, dragType:"", highlight:false, coefOnlyAllowed:false, isFirst: options.isFirst});
+
+    const mulNode = create("div", {class:"blk neu slim"});
+    mulNode.appendChild(blockSpanOp("×"));
+
+    const rightNode = create("div", {class:"blk const flat"});
+    rightNode.appendChild(create("span", {text: fmtAbsDisplay(part.right)})); // décimal si possible
+
+    wrap.appendChild(leftNode);
+    wrap.appendChild(mulNode);
+    wrap.appendChild(rightNode);
+    return wrap;
+  }
+
+  if(part.type==="group"){
+    const wrap = create("div", {class:"pair"});
+    if(draggable){
+      wrap.classList.add("draggable");
+      wrap.style.cursor = "grab";
+      wrap.dataset.dragType = dragType;
+      wrap.dataset.partId = sp.id;
+    }
+    if(highlight) wrap.classList.add("hl");
+
+    const fact = create("div", {class:"blk const"});
+    if(signNode){
+      fact.appendChild(signNode);
+    }else if(sign===-1 && isFirst){
+      fact.appendChild(blockSpanSign("−"));
+    }else if(showPlus){
+      fact.appendChild(blockSpanSign(signChar));
+    }
+    fact.appendChild(create("span", {text: fmtAbsDisplay(part.factor)})); // décimal si possible
+
+    const parL = create("div", {class:"blk neu paren"});
+    parL.appendChild(create("span", {text:"("}));
+
+    const innerWrap = create("div", {class:"pair"});
+    part.inner.forEach((ip, idx)=>{
+      const node = renderTermBlocks(ip, {draggable:false, dragType:"", highlight:false, coefOnlyAllowed:false, isFirst: idx===0});
+      innerWrap.appendChild(node);
+    });
+
+    const parR = create("div", {class:"blk neu paren"});
+    parR.appendChild(create("span", {text:")"}));
+
+    wrap.appendChild(fact);
+    wrap.appendChild(parL);
+    wrap.appendChild(innerWrap);
+    wrap.appendChild(parR);
+    return wrap;
+  }
+
+  const b = create("div", {class:"blk neu"});
+  b.textContent="?";
+  return b;
+}
+
+/* =========================================================
+   Game flow
+========================================================= */
+function startNewEquation(level){
+  STATE.mode = "GAME";
+  STATE.level = level;
+  STATE.eq = generateEquation(level);
+  STATE.eq.level = level;
+  STATE.eq.meta = {
+    createdAt: Date.now(),
+    initialText: null,
+    steps: [],
+    balanceStack: []
+  };
+  STATE.eq.meta.initialText = eqToText(STATE.eq);
+  STATE.eq.meta.steps = [{
+    label: "Équation de départ",
+    snap: deepClone({ left: STATE.eq.left, right: STATE.eq.right })
+  }];
+
+  STATE.undo = [];
+  STATE.help.on = false;
+  STATE.help.suggested = null;
+  setToast("", "");
+  render();
+}
+function newEquationSameLevel(){ startNewEquation(STATE.level); }
+
+/* ---------- Réduction ---------- */
+function findReduceStep(eq){
+  const sides = [
+    {name:"left", s:eq.left},
+    {name:"right", s:eq.right}
+  ];
+  for(const sideInfo of sides){
+    const step = findReduceStepSide(sideInfo.s);
+    if(step){
+      step.side = sideInfo.name;
+      return step;
+    }
+  }
+  return null;
+}
+function findReduceStepSide(s){
+  // 1) distribution (priorité)
+  const gIdx = s.parts.findIndex(sp => sp.part.type==="group");
+  if(gIdx>=0) return {type:"distribute", partId: s.parts[gIdx].id};
+
+  // 2) fraction simplification visible
+  for(const sp of s.parts){
+    const p=sp.part;
+    if(p.type==="term"){
+      if(canReduceF(p.v)) return {type:"frac", partId: sp.id};
+    }else if(p.type==="product"){
+      if(canReduceF(p.left.v)) return {type:"fracL", partId: sp.id};
+      if(canReduceF(p.right)) return {type:"fracR", partId: sp.id};
+    }else if(p.type==="group"){
+      if(canReduceF(p.factor)) return {type:"fracK", partId: sp.id};
+      for(const ip of p.inner){
+        if(ip.part.type==="term" && canReduceF(ip.part.v)) return {type:"fracIn", partId: sp.id, innerId: ip.id};
+      }
+    }
+  }
+  if(s.divTail && canReduceF(s.divTail)) return {type:"fracDiv", partId: "DIVTAIL"};
+
+  // 3) product reduction
+  const pIdx = s.parts.findIndex(sp => sp.part.type==="product");
+  if(pIdx>=0) return {type:"product", partId: s.parts[pIdx].id};
+
+  // 4) combine like terms (term only)
+  const constIds = s.parts.filter(sp => sp.part.type==="term" && sp.part.t==="const").map(sp => sp.id);
+  if(constIds.length>=2) return {type:"combineConst", aId: constIds[0], bId: constIds[1]};
+
+  const varIds = s.parts.filter(sp => sp.part.type==="term" && sp.part.t==="var").map(sp => sp.id);
+  if(varIds.length>=2) return {type:"combineVar", aId: varIds[0], bId: varIds[1]};
+
+  // 5) division tail if possible
+  if(s.divTail){
+    if(s.parts.length===1 && s.parts[0].part.type==="term" && s.parts[0].part.t==="const"){
+      return {type:"divTail"};
+    }
+  }
+  return null;
+}
+
+function applyReduce(){
+  if(STATE.mode!=="GAME") return;
+
+  if(STATE.help.on){
+    const sug = STATE.help.suggested || computeSuggestedAction();
+    if(sug && sug.type!=="reduce"){
+      setToast("Aide : fais l’étape indiquée.", "warn");
+      return;
+    }
+  }
+
+  const eq = STATE.eq;
+  const step = findReduceStep(eq);
+  if(!step){
+    setToast("Rien à réduire.", "warn");
+    return;
+  }
+  pushUndo();
+
+  const s = (step.side==="left") ? eq.left : eq.right;
+
+  function record(label){
+    eq.meta.steps.push({ label, snap: deepClone({left:eq.left, right:eq.right}) });
+  }
+
+  if(step.type==="distribute"){
+    const idx = s.parts.findIndex(p=>p.id===step.partId);
+    const sp = s.parts[idx];
+    const gp = sp.part;
+    const outerSign = sp.sign;
+    const factor = gp.factor;
+    const newParts = [];
+
+    for(const ip of gp.inner){
+      const combinedSign = outerSign * ip.sign;
+      const innerPart = ip.part;
+
+      if(innerPart.type==="term"){
+        if(innerPart.t==="const"){
+          const v = mulF(innerPart.v, factor);
+          const signFlip = v.n<0 ? -1 : 1;
+          newParts.push(signedPart(combinedSign*signFlip, makeTermConst(absF(v))));
+        }else{
+          const v = mulF(innerPart.v, factor);
+          const signFlip = v.n<0 ? -1 : 1;
+          newParts.push(signedPart(combinedSign*signFlip, makeTermVar(absF(v))));
+        }
+      }
+    }
+
+    s.parts.splice(idx,1, ...newParts);
+    record("Distribuer un facteur");
+    render(); return;
+  }
+
+  if(step.type==="frac"){
+    const sp = s.parts.find(p=>p.id===step.partId);
+    reduceF(sp.part.v);
+    record("Réduire une fraction visible");
+    render(); return;
+  }
+  if(step.type==="fracL"){
+    const sp = s.parts.find(p=>p.id===step.partId);
+    reduceF(sp.part.left.v);
+    record("Réduire une fraction visible");
+    render(); return;
+  }
+  if(step.type==="fracR"){
+    const sp = s.parts.find(p=>p.id===step.partId);
+    reduceF(sp.part.right);
+    record("Réduire une fraction visible");
+    render(); return;
+  }
+  if(step.type==="fracK"){
+    const sp = s.parts.find(p=>p.id===step.partId);
+    reduceF(sp.part.factor);
+    record("Réduire une fraction visible");
+    render(); return;
+  }
+  if(step.type==="fracIn"){
+    const sp = s.parts.find(p=>p.id===step.partId);
+    const ip = sp.part.inner.find(x=>x.id===step.innerId);
+    reduceF(ip.part.v);
+    record("Réduire une fraction visible");
+    render(); return;
+  }
+  if(step.type==="fracDiv"){
+    reduceF(s.divTail);
+    record("Réduire une fraction visible");
+    render(); return;
+  }
+
+  if(step.type==="product"){
+    const idx = s.parts.findIndex(p=>p.id===step.partId);
+    const sp = s.parts[idx];
+    const pr = sp.part;
+
+    if(pr.left.t==="const"){
+      const resC = mulF(pr.left.v, pr.right);
+      const abs = absF(resC);
+      const signFlip = resC.n<0 ? -1 : 1;
+      s.parts[idx] = signedPart(sp.sign*signFlip, makeTermConst(abs));
+    }else{
+      const resA = mulF(pr.left.v, pr.right);
+      const abs = absF(resA);
+      const signFlip = resA.n<0 ? -1 : 1;
+      s.parts[idx] = signedPart(sp.sign*signFlip, makeTermVar(abs));
+    }
+    record("Calculer un produit visible");
+    render(); return;
+  }
+
+  if(step.type==="combineConst"){
+    const a = s.parts.find(p=>p.id===step.aId);
+    const b = s.parts.find(p=>p.id===step.bId);
+    const va = a.sign===1 ? cloneF(a.part.v) : {n:-a.part.v.n, d:a.part.v.d};
+    const vb = b.sign===1 ? cloneF(b.part.v) : {n:-b.part.v.n, d:b.part.v.d};
+    const sum = addF(va, vb);
+
+    const idxA = s.parts.findIndex(p=>p.id===a.id);
+    const idxB = s.parts.findIndex(p=>p.id===b.id);
+    const keepIdx = Math.min(idxA, idxB);
+
+    s.parts.splice(Math.max(idxA, idxB),1);
+    s.parts.splice(Math.min(idxA, idxB),1);
+
+    if(sum.n!==0){
+      const spNew = signedPart(sum.n<0?-1:1, makeTermConst(absF(sum)));
+      s.parts.splice(keepIdx, 0, spNew);
+    }
+    record("Réduire des constantes");
+    render(); return;
+  }
+
+  if(step.type==="combineVar"){
+    const a = s.parts.find(p=>p.id===step.aId);
+    const b = s.parts.find(p=>p.id===step.bId);
+    const va = a.sign===1 ? cloneF(a.part.v) : {n:-a.part.v.n, d:a.part.v.d};
+    const vb = b.sign===1 ? cloneF(b.part.v) : {n:-b.part.v.n, d:b.part.v.d};
+    const sum = addF(va, vb);
+
+    const idxA = s.parts.findIndex(p=>p.id===a.id);
+    const idxB = s.parts.findIndex(p=>p.id===b.id);
+    const keepIdx = Math.min(idxA, idxB);
+
+    s.parts.splice(Math.max(idxA, idxB),1);
+    s.parts.splice(Math.min(idxA, idxB),1);
+
+    if(sum.n!==0){
+      const spNew = signedPart(sum.n<0?-1:1, makeTermVar(absF(sum)));
+      s.parts.splice(keepIdx, 0, spNew);
+    }
+    record("Réduire des termes en a");
+    render(); return;
+  }
+
+  if(step.type==="divTail"){
+    const sp = s.parts[0];
+    const val = sp.sign===1 ? cloneF(sp.part.v) : {n:-sp.part.v.n, d:sp.part.v.d};
+    const res = divF(val, s.divTail);
+    s.divTail = null;
+
+    if(res.n===0){
+      s.parts = [ signedPart(1, makeTermConst(F(0,1))) ];
+    }else{
+      s.parts = [ signedPart(res.n<0?-1:1, makeTermConst(absF(res))) ];
+    }
+    record("Calculer une division visible");
+    render(); return;
+  }
+}
+
+/* ---------- Victory ---------- */
+function canWin(eq){
+  if(eq.left.divTail || eq.right.divTail) return false;
+  if(!(eq.left.parts.length===1 && eq.left.parts[0].part.type==="term" && eq.left.parts[0].part.t==="var")) return false;
+  const L = eq.left.parts[0];
+  if(!(L.sign===1 && L.part.v.n===1 && L.part.v.d===1)) return false;
+  if(!(eq.right.parts.length===1 && eq.right.parts[0].part.type==="term" && eq.right.parts[0].part.t==="const")) return false;
+  return true;
+}
+function checkVictory(){
+  if(STATE.mode!=="GAME") return;
+  if(canWin(STATE.eq)){
+    openWin();
+    setToast("Bravo !", "good");
+  }
+}
+
+/* ---------- Help ---------- */
+function computeSuggestedAction(){
+  const eq = STATE.eq;
+
+  const step = findReduceStep(eq);
+  if(step) return {type:"reduce", step};
+
+  const rightVarish = eq.right.parts.find(sp => {
+    const p=sp.part;
+    if(p.type==="term" && p.t==="var") return true;
+    if(p.type==="group") return true;
+    if(p.type==="product" && p.left.t==="var") return true;
+    return false;
+  });
+  if(rightVarish){
+    return {type:"move", sideFrom:"right", partId:rightVarish.id};
+  }
+
+  const leftHasVar = eq.left.parts.some(sp => sp.part.type==="term" && sp.part.t==="var");
+  if(leftHasVar){
+    const leftConst = eq.left.parts.find(sp => sp.part.type==="term" && sp.part.t==="const");
+    if(leftConst) return {type:"move", sideFrom:"left", partId:leftConst.id};
+  }
+
+  if(canCoefMoveFromSide(eq.left)) return {type:"coefMove", sideFrom:"left", partId:eq.left.parts[0].id};
+  if(canCoefMoveFromSide(eq.right)) return {type:"coefMove", sideFrom:"right", partId:eq.right.parts[0].id};
+
+  const rightConst = eq.right.parts.find(sp => sp.part.type==="term" && sp.part.t==="const");
+  if(rightConst) return {type:"move", sideFrom:"right", partId:rightConst.id};
+
+  return {type:"none"};
+}
+
+function toggleHelp(){
+  if(STATE.mode!=="GAME") return;
+  STATE.help.on = !STATE.help.on;
+  STATE.help.suggested = STATE.help.on ? computeSuggestedAction() : null;
+  setToast(STATE.help.on ? "Mode guidé activé." : "Mode guidé quitté.", "");
+  render();
+}
+
+/* =========================================================
+   Drag & Drop
+========================================================= */
+let DRAG = null;
+
+function clearDrag(){
+  DRAG=null;
+  dragGhost.classList.remove("on");
+  dragGhost.innerHTML="";
+  window.removeEventListener("pointermove", onDragMove, {passive:false});
+  window.removeEventListener("pointerup", onDragUp, {passive:false});
+}
+
+function inInput(){
+  const ae = document.activeElement;
+  if(!ae) return false;
+  const tag = ae.tagName ? ae.tagName.toLowerCase() : "";
+  if(tag==="input" || tag==="textarea") return true;
+  if(ae.isContentEditable) return true;
+  return false;
+}
+
+function canInteractWithId(partId, dragType){
+  if(!STATE.help.on) return true;
+  const sug = STATE.help.suggested || computeSuggestedAction();
+  if(!sug || sug.type==="none") return true;
+
+  if(dragType==="part" && sug.type==="move") return sug.partId===partId;
+  if(dragType==="coef" && sug.type==="coefMove") return sug.partId===partId;
+  if(sug.type==="reduce") return false;
+  return true;
+}
+
+function beginDrag(ev, dragType, sideName, partId){
+  if(STATE.mode!=="GAME") return;
+  if(ev.button!==0 && ev.pointerType!=="touch") return;
+
+  if(!canInteractWithId(partId, dragType)){
+    setToast("Aide : suis l’étape indiquée.", "warn");
+    return;
+  }
+
+  const eq = STATE.eq;
+  const fromSide = (sideName==="left") ? eq.left : eq.right;
+
+  if(dragType==="divtail"){
+    if(!fromSide.divTail) return;
+  }else{
+    const found = findPartById(fromSide, partId);
+    if(!found) return;
+  }
+
+  if(dragType==="coef" && !canCoefMoveFromSide(fromSide)){
+    setToast("Le coefficient est déplaçable seulement si ce membre contient uniquement ka.", "warn");
+    return;
+  }
+
+  DRAG = {
+    type: dragType,          // part | coef | divtail
+    from: sideName,
+    partId,
+    pointerId: ev.pointerId,
+    moved:false
+  };
+
+  const target = ev.currentTarget;
+  const ghost = target.cloneNode(true);
+
+  if(dragType==="coef"){
+    const coef = ghost.classList.contains("coef") ? ghost : ghost.querySelector(".coef");
+    if(coef){ coef.classList.add("showTimes"); }
+  }
+
+  dragGhost.innerHTML = "";
+  dragGhost.appendChild(ghost);
+  dragGhost.classList.add("on");
+  dragGhost.style.left = ev.clientX+"px";
+  dragGhost.style.top = ev.clientY+"px";
+
+  // Hide origin during drag:
+  // - part => hide whole
+  // - coef => hide only coefficient, keep 'a' visible
+  // - divtail => hide divTail only
+  if(dragType==="coef") eq._dragHide = { kind:"coef", side: sideName, partId };
+  else if(dragType==="divtail") eq._dragHide = { kind:"divtail", side: sideName, partId:"DIVTAIL" };
+  else eq._dragHide = { kind:"part", side: sideName, partId };
+
+  window.addEventListener("pointermove", onDragMove, {passive:false});
+  window.addEventListener("pointerup", onDragUp, {passive:false});
+  try{ target.setPointerCapture(ev.pointerId); }catch(e){}
+  ev.preventDefault();
+  render();
+}
+
+function onDragMove(ev){
+  if(!DRAG || ev.pointerId!==DRAG.pointerId) return;
+  DRAG.moved = true;
+  dragGhost.style.left = ev.clientX+"px";
+  dragGhost.style.top = ev.clientY+"px";
+  ev.preventDefault();
+}
+
+function pickDropSide(clientX, clientY){
+  const lz = document.querySelector("[data-zone='left']");
+  const rz = document.querySelector("[data-zone='right']");
+  if(!lz || !rz) return DRAG.from;
+  const L = lz.getBoundingClientRect();
+  const R = rz.getBoundingClientRect();
+  const inL = clientX>=L.left && clientX<=L.right && clientY>=L.top && clientY<=L.bottom;
+  const inR = clientX>=R.left && clientX<=R.right && clientY>=R.top && clientY<=R.bottom;
+  if(inL && !inR) return "left";
+  if(inR && !inL) return "right";
+  const mid = (L.right + R.left)/2;
+  return clientX < mid ? "left" : "right";
+}
+
+function onDragUp(ev){
+  if(!DRAG || ev.pointerId!==DRAG.pointerId) return;
+
+  const dropSide = pickDropSide(ev.clientX, ev.clientY);
+  const dragType = DRAG.type;
+  const from = DRAG.from;
+  const partId = DRAG.partId;
+
+  STATE.eq._dragHide = null;
+
+  if(dropSide===from){
+    clearDrag();
+    render();
+    return;
+  }
+
+  if(dragType==="part"){
+    doMovePart(from, dropSide, partId);
+  }else if(dragType==="coef"){
+    doMoveCoef(from, dropSide, partId);
+  }else if(dragType==="divtail"){
+    doMoveDivTail(from, dropSide);
+  }
+
+  clearDrag();
+  render();
+  checkVictory();
+}
+
+function doMovePart(from, to, partId){
+  const eq = STATE.eq;
+  const sFrom = from==="left" ? eq.left : eq.right;
+  const sTo = to==="left" ? eq.left : eq.right;
+
+  const found = findPartById(sFrom, partId);
+  if(!found) return;
+
+  pushUndo();
+
+  const sp = found.sp;
+  sFrom.parts.splice(found.idx,1);
+
+  const moved = invertSign(sp);
+  sTo.parts.push(moved);
+
+  eq.meta.steps.push({
+    label: "Déplacer un terme (le signe change)",
+    snap: deepClone({left:eq.left, right:eq.right})
+  });
+
+  STATE.help.suggested = STATE.help.on ? computeSuggestedAction() : null;
+  setToast("Terme déplacé : signe inversé.", "");
+}
+
+function doMoveCoef(from, to, partId){
+  const eq = STATE.eq;
+  const sFrom = from==="left" ? eq.left : eq.right;
+  const sTo = to==="left" ? eq.left : eq.right;
+
+  if(!canCoefMoveFromSide(sFrom)) { setToast("Coefficient non déplaçable ici.", "warn"); return; }
+  const sp = sFrom.parts[0];
+  if(sp.id!==partId) { setToast("Coefficient non déplaçable ici.", "warn"); return; }
+
+  const absCoeff = sp.part.v;
+  const k = sp.sign===1 ? cloneF(absCoeff) : {n:-absCoeff.n, d:absCoeff.d};
+
+  pushUndo();
+
+  // Keep 'a' on original side (CRITICAL)
+  sFrom.parts = [ signedPart(1, makeTermVar(F(1,1))) ];
+
+  if(sTo.divTail){
+    sTo.divTail = mulF(sTo.divTail, k);
+  }else{
+    sTo.divTail = k;
+  }
+
+  eq.meta.steps.push({
+    label: "Déplacer le coefficient → division",
+    snap: deepClone({left:eq.left, right:eq.right})
+  });
+
+  STATE.help.suggested = STATE.help.on ? computeSuggestedAction() : null;
+  setToast("Coefficient déplacé : devient une division.", "");
+}
+
+function doMoveDivTail(from, to){
+  const eq = STATE.eq;
+  const sFrom = from==="left" ? eq.left : eq.right;
+  const sTo = to==="left" ? eq.left : eq.right;
+
+  if(!sFrom.divTail) return;
+  if(!isOnlyA(sTo)){
+    setToast("Pour revenir : l’autre membre doit être exactement a.", "warn");
+    return;
+  }
+
+  pushUndo();
+
+  const k = sFrom.divTail;
+  sFrom.divTail = null;
+
+  const sign = k.n<0 ? -1 : 1;
+  const abs = absF(k);
+  sTo.parts = [ signedPart(sign, makeTermVar(abs)) ];
+
+  eq.meta.steps.push({
+    label: "Re-drag ÷k → redevient coefficient",
+    snap: deepClone({left:eq.left, right:eq.right})
+  });
+
+  STATE.help.suggested = STATE.help.on ? computeSuggestedAction() : null;
+  setToast("Division déplacée : redevient coefficient.", "");
+}
+
+/* =========================================================
+   Cheatcodes : 194, +++, ---
+========================================================= */
+let keyBuf = "";
+
+function handleCheatKey(ev){
+  if(inInput()) return;
+  const k = ev.key;
+
+  if(/^\d$/.test(k)){
+    keyBuf = (keyBuf + k).slice(-6);
+    if(keyBuf.endsWith("194")){
+      keyBuf = "";
+      openProf();
+    }
+    return;
+  }
+  if(k === "+"){
+    keyBuf = (keyBuf + "+").slice(-6);
+    if(keyBuf.endsWith("+++")){
+      keyBuf = "";
+      applyPlusPlusPlus();
+    }
+    return;
+  }
+  if(k === "-"){
+    keyBuf = (keyBuf + "-").slice(-6);
+    if(keyBuf.endsWith("---")){
+      keyBuf = "";
+      applyMinusMinusMinus();
+    }
+    return;
+  }
+
+  if(k.length===1) keyBuf = keyBuf.slice(-2);
+}
+
+function normalizeBalanceDescriptor(sp){
+  const p = sp.part;
+  if(!p || p.type!=="term") return null;
+  return { kind: p.t, sign: sp.sign, v: {n:p.v.n, d:p.v.d} };
+}
+function sameTermDescriptor(sp, desc){
+  const p = sp.part;
+  if(!p || p.type!=="term") return false;
+  if(p.t !== desc.kind) return false;
+  if(sp.sign !== desc.sign) return false;
+  return (p.v.n===desc.v.n && p.v.d===desc.v.d);
+}
+
+function applyPlusPlusPlus(){
+  if(STATE.mode!=="GAME"){
+    setToast("Raccourci +++ : en mode JEU.", "warn");
+    return;
+  }
+
+  pushUndo();
+
+  const eq = STATE.eq;
+  const lvl = eq.level || STATE.level;
+
+  let termType;
+  if(lvl<=3) termType="const";
+  else termType = RNG.chance(0.55) ? "const" : "var";
+
+  let sp;
+  if(termType==="const"){
+    const absV = (lvl>=5 && !STATE.prof.noFractions) ? absMaybeFrac(lvl, true) : absInt(1,12);
+    const sign = (STATE.prof.noNegatives ? 1 : randSign());
+    sp = signedPart(sign, makeTermConst(absV));
+  }else{
+    const absC = (lvl>=5 && !STATE.prof.noFractions) ? absMaybeFrac(lvl, true) : absInt(1,8);
+    const sign = (STATE.prof.noNegatives ? 1 : randSign());
+    sp = signedPart(sign, makeTermVar(absC));
+  }
+
+  const leftAdd = deepClone(sp); leftAdd.id = uid("p");
+  const rightAdd = deepClone(sp); rightAdd.id = uid("p");
+
+  eq.left.parts.push(leftAdd);
+  eq.right.parts.push(rightAdd);
+
+  const desc = normalizeBalanceDescriptor(sp);
+  if(desc) eq.meta.balanceStack.push(desc);
+
+  eq.meta.steps.push({
+    label: "Ajout de termes (équation inchangée)",
+    snap: deepClone({left:eq.left, right:eq.right})
+  });
+
+  setToast("+++ : 2 termes ajoutés (équation inchangée).", "");
+  render();
+}
+
+function removeMatchingPair(desc){
+  const eq = STATE.eq;
+  const L = eq.left.parts;
+  const R = eq.right.parts;
+  const iL = L.findIndex(sp => sameTermDescriptor(sp, desc));
+  const iR = R.findIndex(sp => sameTermDescriptor(sp, desc));
+  if(iL<0 || iR<0) return false;
+
+  const preview = deepClone(eq);
+  preview.left.parts.splice(iL,1);
+  preview.right.parts.splice(iR,1);
+
+  if(isAtMostLevel1(eq)) return false;
+  const sol = solveEquation(preview);
+  if(!sol) return false;
+
+  L.splice(iL,1);
+  R.splice(iR,1);
+  return true;
+}
+function findAnyRemovablePair(){
+  const eq = STATE.eq;
+  for(const spL of eq.left.parts){
+    const desc = normalizeBalanceDescriptor(spL);
+    if(!desc) continue;
+    if(eq.right.parts.some(spR => sameTermDescriptor(spR, desc))){
+      return desc;
+    }
+  }
+  return null;
+}
+
+function applyMinusMinusMinus(){
+  if(STATE.mode!=="GAME"){
+    setToast("Raccourci --- : en mode JEU.", "warn");
+    return;
+  }
+  const eq = STATE.eq;
+
+  if(isAtMostLevel1(eq)){
+    setToast("--- : déjà au minimum (type N1).", "warn");
+    return;
+  }
+
+  pushUndo();
+
+  let removed = false;
+
+  // priorité : retirer ce qui a été ajouté par +++
+  if(eq.meta && Array.isArray(eq.meta.balanceStack) && eq.meta.balanceStack.length){
+    const desc = eq.meta.balanceStack.pop();
+    if(desc) removed = removeMatchingPair(desc);
+  }
+
+  if(!removed){
+    const any = findAnyRemovablePair();
+    if(any) removed = removeMatchingPair(any);
+  }
+
+  if(!removed){
+    setToast("--- : aucun terme équilibré à enlever.", "warn");
+    undo();
+    return;
+  }
+
+  eq.meta.steps.push({
+    label: "Retirer des termes (équation inchangée)",
+    snap: deepClone({left:eq.left, right:eq.right})
+  });
+
+  setToast("--- : 2 termes enlevés (équation inchangée).", "");
+  render();
+}
+
+/* =========================================================
+   Mode TEST
+========================================================= */
+function buildTest(){
+  STATE.mode = "TEST";
+  STATE.test.validated = false;
+  STATE.test.totalPoints = 0;
+  STATE.test.note20 = 0;
+
+  const forced = STATE.prof.forceLevels.slice();
+  const levels = (forced.length>0) ? forced : [1,2,3,4,5];
+
+  const items=[];
+  if(forced.length===0){
+    for(let lvl=1; lvl<=5; lvl++){
+      for(let k=0;k<2;k++){
+        items.push(makeTestItem(lvl));
+      }
+    }
+  }else{
+    for(let i=0;i<10;i++){
+      items.push(makeTestItem(RNG.pick(levels)));
+    }
+  }
+
+  STATE.test.items = items;
+  render();
+}
+
+function makeTestItem(level){
+  const eq = generateEquation(level);
+  eq.level = level;
+  const sol = solveEquation(eq);
+  const text = eqToText(eq);
+  return {
+    id: uid("t"),
+    level,
+    eqText: text,
+    solution: sol,
+    answer: "",
+    correct: null,
+    points: 0
+  };
+}
+
+function validateTest(){
+  const items = STATE.test.items;
+  let total=0;
+  for(const it of items){
+    const ansF = parseAnswer(it.answer);
+    if(!ansF){
+      it.correct = false;
+      it.points = 0;
+      continue;
+    }
+    it.correct = eqF(ansF, it.solution);
+    it.points = it.correct ? 2 : 0;
+    total += it.points;
+  }
+  STATE.test.totalPoints = total;
+  STATE.test.note20 = total;
+  STATE.test.validated = true;
+  setToast(`Test validé : ${total}/20`, "good");
+  render();
+}
+
+function downloadText(text, filename, mime){
+  const blob = new Blob([text], {type: mime});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url), 2000);
+}
+
+/* --- Export Excel (.xls HTML) avec cellule SOMME --- */
+function exportExcel(){
+  if(!STATE.test.validated){
+    setToast("Valide d’abord le test.", "warn");
+    return;
+  }
+
+  const items = STATE.test.items;
+  const rows = items.map((it, i) => {
+    const idx = i+1;
+    const eqText = (it.eqText||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+    const ans = (it.answer||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+    const good = fmtDecOrFrac(it.solution).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+    const corr = it.correct ? 1 : 0;
+    const pts = it.points;
+    return `
+      <tr>
+        <td>${idx}</td>
+        <td>${it.level}</td>
+        <td>${eqText}</td>
+        <td>${ans}</td>
+        <td>${good}</td>
+        <td>${corr}</td>
+        <td>${pts}</td>
+      </tr>`;
+  }).join("");
+
+  const startRow = 2;
+  const endRow = items.length + 1;
+  const sumFormula = `=SOMME(G${startRow}:G${endRow})`;
+
+  const html = `
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+      xmlns:x="urn:schemas-microsoft-com:office:excel"
+      xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+<meta charset="utf-8" />
+<!--[if gte mso 9]><xml>
+ <x:ExcelWorkbook>
+  <x:ExcelWorksheets>
+   <x:ExcelWorksheet>
+    <x:Name>TEST</x:Name>
+    <x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions>
+   </x:ExcelWorksheet>
+  </x:ExcelWorksheets>
+ </x:ExcelWorkbook>
+</xml><![endif]-->
+<style>
+  table{border-collapse:collapse;font-family:Calibri,Arial,sans-serif;font-size:11pt;}
+  th,td{border:1px solid #999;padding:6px 8px;vertical-align:top;}
+  th{background:#f3f3f3;font-weight:bold;}
+  .small{min-width:80px;}
+  .wide{min-width:360px;}
+  .mid{min-width:140px;}
+  .totalLabel{font-weight:bold;background:#f9f9f9;}
+  .totalCell{font-weight:bold;background:#fff7e6;}
+</style>
+</head>
+<body>
+  <table>
+    <tr>
+      <th class="small">index_question</th>
+      <th class="small">niveau</th>
+      <th class="wide">equation</th>
+      <th class="mid">reponse_eleve</th>
+      <th class="mid">bonne_reponse</th>
+      <th class="small">correct</th>
+      <th class="small">points</th>
+    </tr>
+    ${rows}
+    <tr>
+      <td class="totalLabel" colspan="6">TOTAL (sur 20)</td>
+      <td class="totalCell">${sumFormula}</td>
+    </tr>
+  </table>
+</body>
+</html>`.trim();
+
+  downloadText(html, "BLOCMATHS_EQUATIONS_TEST.xls", "application/vnd.ms-excel;charset=utf-8");
+  setToast("Fichier Excel exporté.", "");
+}
+
+/* =========================================================
+   Prof actions
+========================================================= */
+function syncProfUI(){
+  const p = STATE.prof;
+  const set = (id, v)=>{ const el=document.getElementById(id); if(el) el.checked=!!v; };
+  set("pN1", p.forceLevels.includes(1));
+  set("pN2", p.forceLevels.includes(2));
+  set("pN3", p.forceLevels.includes(3));
+  set("pN4", p.forceLevels.includes(4));
+  set("pN5", p.forceLevels.includes(5));
+  set("pNoNeg", p.noNegatives);
+  set("pNoFrac", p.noFractions);
+  set("pAddTerms", p.addTerms);
+  set("pAddFacts", p.addFactors);
+}
+function saveProfFromUI(){
+  const levels=[];
+  if(document.getElementById("pN1").checked) levels.push(1);
+  if(document.getElementById("pN2").checked) levels.push(2);
+  if(document.getElementById("pN3").checked) levels.push(3);
+  if(document.getElementById("pN4").checked) levels.push(4);
+  if(document.getElementById("pN5").checked) levels.push(5);
+
+  STATE.prof = {
+    forceLevels: levels,
+    noNegatives: document.getElementById("pNoNeg").checked,
+    noFractions: document.getElementById("pNoFrac").checked,
+    addTerms: document.getElementById("pAddTerms").checked,
+    addFactors: document.getElementById("pAddFacts").checked
+  };
+  LS.set("bmeq_prof", STATE.prof);
+  setToast("Paramètres enregistrés.", "");
+}
+
+function profAutoCorrection(){
+  if(STATE.mode==="TEST"){
+    // Remplit avec l’affichage "résultats" (décimal si possible, sinon fraction irréductible)
+    STATE.test.items.forEach(it=>{ it.answer = fmtDecOrFrac(it.solution); });
+    validateTest();
+    closeProf();
+    return;
+  }
+
+  if(STATE.mode!=="GAME"){
+    setToast("Correction auto : mode JEU ou TEST.", "warn");
+    return;
+  }
+
+  const eq = STATE.eq;
+  const text0 = eq.meta?.initialText || eqToText(eq);
+  const L=linSide(eq.left);
+  const R=linSide(eq.right);
+  const denom = subF(L.a, R.a);
+  const num = subF(R.c, L.c);
+  const sol = solveEquation(eq);
+
+  const body = document.getElementById("autoBody");
+  body.innerHTML = "";
+
+  body.appendChild(create("div",{class:"msg"},[
+    create("div",{class:"subtle", text:"Équation initiale :"}),
+    create("div",{text:text0, style:"font-weight:1000"})
+  ]));
+
+  body.appendChild(create("div",{class:"msg"},[
+    create("div",{class:"subtle", text:"Après réduction algébrique (linéaire) :"}),
+    create("div",{text:`(${fmtFrac(L.a)})a + (${fmtFrac(L.c)}) = (${fmtFrac(R.a)})a + (${fmtFrac(R.c)})`, style:"font-weight:1000"})
+  ]));
+
+  body.appendChild(create("div",{class:"msg"},[
+    create("div",{class:"subtle", text:"Regrouper les termes en a et les constantes :"}),
+    create("div",{text:`(${fmtFrac(denom)})a = (${fmtFrac(num)})`, style:"font-weight:1000"})
+  ]));
+
+  body.appendChild(create("div",{class:"msg good"},[
+    create("div",{class:"subtle", text:"Diviser par le coefficient :"}),
+    create("div",{text:`a = (${fmtFrac(num)}) ÷ (${fmtFrac(denom)})`, style:"font-weight:1000"})
+  ]));
+
+  body.appendChild(create("div",{class:"msg good"},[
+    create("div",{class:"subtle", text:"Résultat (décimal si possible) :"}),
+    create("div",{text:`a = ${fmtDecOrFrac(sol)}`, style:"font-weight:1100;font-size:18px"})
+  ]));
+
+  openAuto();
+  closeProf();
+}
+
+/* =========================================================
+   Export HTML (autonome)
+========================================================= */
+function exportHTML(){
+  const exportState = {
+    version: "2.5",
+    when: Date.now(),
+    zoom: STATE.zoom,
+    prof: STATE.prof,
+    mode: STATE.mode,
+    level: STATE.level,
+    game: (STATE.mode==="GAME" && STATE.eq) ? STATE.eq : null,
+    test: (STATE.mode==="TEST") ? STATE.test : null
+  };
+
+  const html = document.documentElement.outerHTML;
+  const marker = "const EXPORTED_STATE = null;";
+  const inject = "const EXPORTED_STATE = " + JSON.stringify(exportState) + ";";
+  const out = html.includes(marker) ? html.replace(marker, inject) : html;
+
+  downloadText(out, "BLOCMATHS_EQUATIONS_export.html", "text/html;charset=utf-8");
+  setToast("Export HTML prêt.", "");
+}
+
+/* =========================================================
+   Render screens
+========================================================= */
+function renderLevelBar(){
+  levelBar.innerHTML = "";
+  const row = create("div", {class:"bar"});
+  for(let i=1;i<=5;i++){
+    const b = create("button", {class:"btn small", text:`N${i}`});
+    b.addEventListener("click", ()=> startNewEquation(i));
+    row.appendChild(b);
+  }
+  const testBtn = create("button", {class:"btn small primary", text:"TEST"});
+  testBtn.addEventListener("click", buildTest);
+  row.appendChild(testBtn);
+  levelBar.appendChild(row);
+}
+
+function renderHome(){
+  const card = create("div", {class:"card"});
+  const hint = create("div", {class:"homeHint", html:
+    "Choisis un niveau ou lance un <b>TEST</b>. Tu manipules les blocs pour résoudre <b>pas à pas</b>."
+  });
+
+  const row = create("div", {class:"bar", style:"flex-wrap:wrap;gap:10px"});
+  for(let i=1;i<=5;i++){
+    const b = create("button", {class:"btn primary", text:`Niveau ${i}`});
+    b.addEventListener("click", ()=> startNewEquation(i));
+    row.appendChild(b);
+  }
+  const t = create("button", {class:"btn", text:"TEST"});
+  t.addEventListener("click", buildTest);
+  row.appendChild(t);
+
+  const row2 = create("div", {class:"bar", style:"flex-wrap:wrap;gap:10px"});
+  const fs = create("button", {class:"btn", text:"Plein écran"});
+  fs.addEventListener("click", toggleFullscreen);
+  const ex = create("button", {class:"btn", text:"Export HTML"});
+  ex.addEventListener("click", exportHTML);
+  row2.appendChild(fs);
+  row2.appendChild(ex);
+
+  const link = create("a", {
+    class:"tinyLink",
+    href:"https://www.linkedin.com/in/tomrougeaud",
+    target:"_blank",
+    rel:"noopener noreferrer",
+    text:"Tom Rougeaud"
+  });
+
+  card.appendChild(hint);
+  card.appendChild(row);
+  card.appendChild(row2);
+  card.appendChild(create("div", {style:"display:flex;justify-content:flex-end"} , [link]));
+
+  main.innerHTML="";
+  main.appendChild(card);
+}
+
+function renderEquation(eq){
+  const eqWrap = create("div", {class:"eqWrap"});
+  const sc = create("div", {class:"eqScroll", id:"eqScroll"});
+  const eqEl = create("div", {class:"eq", id:"eqEl"});
+
+  const leftZone = create("div", {class:"side", "data-zone":"left"});
+  const rightZone = create("div", {class:"side", "data-zone":"right"});
+
+  const hide = eq._dragHide || null;
+
+  function renderSide(zone, s, sideName){
+    zone.innerHTML = "";
+    const parts = s.parts;
+
+    parts.forEach((sp, idx)=>{
+      const isFirst = idx===0;
+
+      // hide whole part if dragging term
+      if(hide && hide.kind==="part" && hide.side===sideName && hide.partId===sp.id) return;
+
+      const p = sp.part;
+
+      let draggable = true;
+      let coefOnlyAllowed = false;
+
+      const coefMovePossible = canCoefMoveFromSide(s);
+      if(coefMovePossible){
+        if(p.type==="term" && p.t==="var"){
+          draggable = false;
+          coefOnlyAllowed = true;
+        }
+      }
+
+      const hl = (STATE.help.on && STATE.help.suggested && (
+        (STATE.help.suggested.type==="move" && STATE.help.suggested.partId===sp.id) ||
+        (STATE.help.suggested.type==="coefMove" && STATE.help.suggested.partId===sp.id)
+      ));
+
+      const node = renderTermBlocks(sp, {
+        draggable,
+        dragType: "part",
+        highlight: hl,
+        coefOnlyAllowed,
+        isFirst
+      });
+
+      // If dragging coef: hide coef block only, keep 'a' visible
+      if(hide && hide.kind==="coef" && hide.side===sideName && hide.partId===sp.id){
+        const coef = node.querySelector(".coef");
+        if(coef) coef.style.display="none";
+      }
+
+      if(draggable){
+        node.addEventListener("pointerdown", (ev)=> beginDrag(ev, "part", sideName, sp.id));
+      }
+      if(coefOnlyAllowed){
+        const coef = node.querySelector(".coef");
+        if(coef){
+          coef.addEventListener("pointerdown", (ev)=> beginDrag(ev, "coef", sideName, sp.id));
+        }
+      }
+
+      zone.appendChild(node);
+    });
+
+    if(s.divTail){
+      if(!(hide && hide.kind==="divtail" && hide.side===sideName)){
+        const divBlk = create("div", {class:"blk var draggable"});
+        divBlk.appendChild(create("span", {class:"opChar", text:"÷"}));
+        divBlk.appendChild(create("span", {text: fmtMaybeParenSignedF(s.divTail)}));
+        divBlk.addEventListener("pointerdown", (ev)=> beginDrag(ev, "divtail", sideName, "DIVTAIL"));
+        zone.appendChild(divBlk);
+      }
+    }
+  }
+
+  renderSide(leftZone, eq.left, "left");
+  const sep = create("div", {class:"eqSep"});
+  sep.appendChild(create("span", {text:"="}));
+  renderSide(rightZone, eq.right, "right");
+
+  eqEl.appendChild(leftZone);
+  eqEl.appendChild(sep);
+  eqEl.appendChild(rightZone);
+
+  sc.appendChild(eqEl);
+  eqWrap.appendChild(sc);
+  return eqWrap;
+}
+
+function renderCorrectionSteps(eq){
+  const wrap = create("div", {class:"feedback"});
+  const steps = eq.meta?.steps || [];
+  if(steps.length<=1){
+    wrap.appendChild(create("div", {class:"subtle", text:"(La correction apparaîtra ici.)"}));
+    return wrap;
+  }
+  steps.forEach((st, idx)=>{
+    const card = create("div", {class:"msg"});
+    card.appendChild(create("div", {class:"subtle", text:`Étape ${idx} — ${st.label}`}));
+    const snapEq = { left: st.snap.left, right: st.snap.right, _dragHide:null };
+    card.appendChild(renderEquation(snapEq));
+    wrap.appendChild(card);
+  });
+  return wrap;
+}
+
+function renderGame(){
+  const eq = STATE.eq;
+  const card = create("div", {class:"card"});
+
+  card.appendChild(renderEquation(eq));
+
+  const mini = create("div", {class:"miniBar"});
+
+  const bReduce = create("button", {class:"btn primary", text:"Réduire"});
+  const bHelp = create("button", {class:"btn", text: STATE.help.on ? "Quitter l’aide" : "Je bloque"});
+  const bUndo = create("button", {class:"btn", text:"Revenir en arrière"});
+  const bNew = create("button", {class:"btn", text:"Nouvelle équation"});
+  const bZoomM = create("button", {class:"btn", text:"Zoom −"});
+  const bZoomP = create("button", {class:"btn", text:"Zoom +"});
+
+  bReduce.addEventListener("click", ()=>{
+    applyReduce();
+    checkVictory();
+    if(STATE.help.on) STATE.help.suggested = computeSuggestedAction();
+    render();
+  });
+  bHelp.addEventListener("click", toggleHelp);
+  bUndo.addEventListener("click", undo);
+  bNew.addEventListener("click", newEquationSameLevel);
+
+  bZoomM.addEventListener("click", ()=>{
+    STATE.zoom = Math.max(0.70, +(STATE.zoom - 0.05).toFixed(2));
+    LS.set("bmeq_zoom", STATE.zoom);
+    applyZoom();
+    render();
+  });
+  bZoomP.addEventListener("click", ()=>{
+    STATE.zoom = Math.min(1.40, +(STATE.zoom + 0.05).toFixed(2));
+    LS.set("bmeq_zoom", STATE.zoom);
+    applyZoom();
+    render();
+  });
+
+  mini.appendChild(bReduce);
+  mini.appendChild(bHelp);
+  mini.appendChild(bUndo);
+  mini.appendChild(bNew);
+  mini.appendChild(bZoomM);
+  mini.appendChild(bZoomP);
+
+  card.appendChild(mini);
+
+  const feedback = create("div", {class:"feedback"});
+
+  if(STATE.help.on){
+    const sug = STATE.help.suggested || computeSuggestedAction();
+    STATE.help.suggested = sug;
+
+    let txt="";
+    if(sug.type==="reduce") txt = "Consigne : clique sur « Réduire » pour faire la prochaine étape.";
+    else if(sug.type==="move") txt = "Consigne : déplace le bloc surligné de l’autre côté (le signe change).";
+    else if(sug.type==="coefMove") txt = "Consigne : déplace le coefficient surligné (il devient une division).";
+    else txt = "Consigne : essaie un déplacement utile, puis « Réduire ».";
+    feedback.appendChild(create("div", {class:"msg warn", text: txt}));
+  }
+
+  if(STATE.toast.text){
+    feedback.appendChild(create("div", {class:`msg ${STATE.toast.kind||""}`.trim(), text: STATE.toast.text}));
+  }else{
+    feedback.appendChild(create("div", {class:"subtle", text:
+      "Rappel : un terme qui traverse = change de signe. Réduis et développe via « Réduire »."
+    }));
+  }
+
+  if(canWin(eq)){
+    // Afficher une correction pas à pas (issue des snapshots)
+    feedback.appendChild(create("div", {class:"msg good", html:"<b>Correction complète</b> (étape par étape) :"}));
+    feedback.appendChild(renderCorrectionSteps(eq));
+    // Afficher aussi la valeur finale avec règle décimal/fraction
+    const sol = solveEquation(eq);
+    if(sol){
+      feedback.appendChild(create("div", {class:"msg good", html:`Résultat : <b>a = ${fmtDecOrFrac(sol)}</b>`}));
+    }
+  }
+
+  card.appendChild(feedback);
+
+  main.innerHTML="";
+  main.appendChild(card);
+}
+
+function renderTest(){
+  const card = create("div", {class:"card"});
+
+  const head = create("div", {class:"bar", style:"flex-wrap:wrap;gap:10px"});
+  head.appendChild(create("div", {class:"chip", text:"Mode TEST"}));
+
+  const bNew = create("button", {class:"btn", text:"Nouveau test"});
+  const bVal = create("button", {class:"btn primary", text:"Valider le test"});
+  const bXls = create("button", {class:"btn", text:"Exporter Excel"});
+  bXls.disabled = !STATE.test.validated;
+
+  bNew.addEventListener("click", buildTest);
+  bVal.addEventListener("click", validateTest);
+  bXls.addEventListener("click", exportExcel);
+
+  head.appendChild(bNew);
+  head.appendChild(bVal);
+  head.appendChild(bXls);
+
+  card.appendChild(head);
+
+  if(STATE.test.validated){
+    card.appendChild(create("div", {class:"msg good", text:`Note : ${STATE.test.note20}/20`}));
+  }else{
+    card.appendChild(create("div", {class:"subtle", text:"Réponds : a = ... (fractions 3/2 acceptées, décimaux avec . ou ,)" }));
+  }
+
+  const list = create("div", {class:"testList"});
+  STATE.test.items.forEach((it, idx)=>{
+    const row = create("div", {class:"qRow"});
+    const colIdx = create("div", {class:"qIdx", text: String(idx+1)});
+    const colEq = create("div", {class:"qEq", text: it.eqText});
+    const colAns = create("div", {class:"qAns"});
+    colAns.appendChild(create("span", {text:"a ="}));
+    const inp = create("input", {type:"text", value: it.answer, inputmode:"decimal", autocomplete:"off"});
+    inp.addEventListener("input", ()=>{
+      it.answer = inp.value;
+      if(STATE.test.validated){
+        STATE.test.validated = false;
+        it.correct = null;
+        it.points = 0;
+      }
+    });
+    colAns.appendChild(inp);
+
+    if(STATE.test.validated){
+      const mark = create("span", {class:`mark ${it.correct?"good":"bad"}`.trim(), text: it.correct ? "✓" : "✗"});
+      colAns.appendChild(mark);
+    }
+
+    row.appendChild(colIdx);
+    row.appendChild(colEq);
+    row.appendChild(colAns);
+    list.appendChild(row);
+  });
+
+  card.appendChild(list);
+
+  main.innerHTML="";
+  main.appendChild(card);
+}
+
+function render(){
+  renderLevelBar();
+
+  if(STATE.mode==="HOME") renderHome();
+  else if(STATE.mode==="GAME") renderGame();
+  else if(STATE.mode==="TEST") renderTest();
+
+  const isFS = !!document.fullscreenElement;
+  document.getElementById("btnFSFloat").textContent = isFS ? "⤢" : "⛶";
+}
+
+/* =========================================================
+   Init / Events
+========================================================= */
+document.getElementById("btnFSHead").addEventListener("click", toggleFullscreen);
+document.getElementById("btnFSFloat").addEventListener("click", toggleFullscreen);
+document.getElementById("btnExport").addEventListener("click", exportHTML);
+
+document.getElementById("goFS").addEventListener("click", async ()=>{
+  await toggleFullscreen();
+  STATE.fsPromptDone = true;
+  LS.set("bmeq_fs_prompt_done", true);
+  ovFS.classList.remove("on");
+});
+document.getElementById("laterFS").addEventListener("click", ()=>{
+  STATE.fsPromptDone = true;
+  LS.set("bmeq_fs_prompt_done", true);
+  ovFS.classList.remove("on");
+});
+document.getElementById("closeFS").addEventListener("click", ()=>{
+  STATE.fsPromptDone = true;
+  LS.set("bmeq_fs_prompt_done", true);
+  ovFS.classList.remove("on");
+});
+
+document.getElementById("closeWin").addEventListener("click", closeWin);
+document.getElementById("winSame").addEventListener("click", ()=>{
+  closeWin();
+  newEquationSameLevel();
+});
+document.getElementById("winUp").addEventListener("click", ()=>{
+  closeWin();
+  const next = Math.min(5, STATE.level+1);
+  startNewEquation(next);
+});
+
+document.getElementById("closeProf").addEventListener("click", closeProf);
+document.getElementById("profSave").addEventListener("click", ()=>{
+  saveProfFromUI();
+  closeProf();
+});
+document.getElementById("profAuto").addEventListener("click", profAutoCorrection);
+
+document.getElementById("closeAuto").addEventListener("click", closeAuto);
+
+window.addEventListener("keydown", (ev)=>{
+  handleCheatKey(ev);
+
+  const z = ev.key.toLowerCase()==="z";
+  if(z && (ev.ctrlKey || ev.metaKey) && STATE.mode==="GAME"){
+    ev.preventDefault();
+    undo();
+  }
+});
+document.addEventListener("fullscreenchange", ()=>{ render(); });
+
+applyZoom();
+
+/* ---------- Restore from exported state if present ---------- */
+(function restore(){
+  if(EXPORTED_STATE && typeof EXPORTED_STATE==="object"){
+    try{
+      if(EXPORTED_STATE.zoom!=null){
+        STATE.zoom = EXPORTED_STATE.zoom;
+        LS.set("bmeq_zoom", STATE.zoom);
+        applyZoom();
+      }
+      if(EXPORTED_STATE.prof){
+        STATE.prof = EXPORTED_STATE.prof;
+        LS.set("bmeq_prof", STATE.prof);
+      }
+      if(EXPORTED_STATE.mode){
+        STATE.mode = EXPORTED_STATE.mode;
+        STATE.level = EXPORTED_STATE.level || 1;
+        if(EXPORTED_STATE.mode==="GAME" && EXPORTED_STATE.game){
+          STATE.eq = EXPORTED_STATE.game;
+        }else if(EXPORTED_STATE.mode==="TEST" && EXPORTED_STATE.test){
+          STATE.test = EXPORTED_STATE.test;
+        }else{
+          STATE.mode = "HOME";
+        }
+      }
+    }catch(e){}
+  }
+})();
+
+/* ---------- First render ---------- */
+render();
+
+/* ---------- Fullscreen prompt at startup ---------- */
+setTimeout(()=>{
+  if(!STATE.fsPromptDone){
+    ovFS.classList.add("on");
+  }
+}, 250);
+
+/* ---------- Safety ---------- */
+if(STATE.mode==="GAME" && !STATE.eq){ STATE.mode="HOME"; render(); }
+if(STATE.mode==="TEST" && (!STATE.test || !STATE.test.items || !STATE.test.items.length)){ STATE.mode="HOME"; render(); }
+
+/* ---------- Click outside closes overlays ---------- */
+[ovFS, ovWin, ovProf, ovAuto].forEach(ov=>{
+  ov.addEventListener("click", (e)=>{
+    if(e.target===ov) ov.classList.remove("on");
+  });
+});
+
+/* ---------- Title dblclick back HOME (discret) ---------- */
+document.querySelector(".title").addEventListener("dblclick", ()=>{
+  STATE.mode="HOME";
+  render();
+});
+</script>
+
+
+
+<style>
+</style>
+<script>
+// your code goes here
+</script></body></html>
