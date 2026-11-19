@@ -154,6 +154,7 @@ details.journal summary{cursor:pointer;font-weight:700;min-height:44px;display:f
 .bloc-cours ol,.bloc-cours ul{margin:.3em 0;padding-left:1.3em}
 .cours-eq{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin:6px 0}
 .cours-eq .egal-s{font-size:1.5rem;font-weight:800}
+.legende-cours{font-size:.82rem;color:var(--muet);margin:2px 0}
 .cours-ligne{font-weight:700;font-size:1.05rem;margin:2px 0}
 
 /* ===== 7. Réglages ===== */
@@ -432,7 +433,7 @@ details.journal summary{cursor:pointer;font-weight:700;min-height:44px;display:f
    BLOCS ÉQUATIONS — moteur (Tom Rougeaud · réalisé avec Claude Sonnet 5.5)
    Sections : 1 outils · 2 fractions · 3 stockage · 4 génération · 5 plateau
    ============================================================================ */
-const VERSION = "3.0.0";
+const VERSION = "3.0.1";
 const PREFIXE = "blocseq_v3_";                       // préfixe des clés de stockage
 const CONTENU = JSON.parse(document.getElementById("contenu").textContent);
 const REDUIT = !!(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches);
@@ -952,21 +953,22 @@ $("bGuide").addEventListener("click", () => {
 
 /* ---------- 9. Cours = fiche de révision (imprimable en PDF) ---------- */
 const ETIQUETTES = { def: "Définition", regle: "À retenir", methode: "Méthode", exemple: "Exemple", attention: "Attention" };
-function blocStatique(type, v) {
+function blocStatique(type, v, sansSigne) {
   const b = el("span", "bloc statique " + type);
-  b.appendChild(el("span", "signe " + (v.n < 0 ? "m" : "p"), v.n < 0 ? "−" : "+"));
+  if (!sansSigne) b.appendChild(el("span", "signe " + (v.n < 0 ? "m" : "p"), v.n < 0 ? "−" : "+"));   // le 1er terme positif s’écrit sans signe
   const val = el("span"), a = absF(v);
   if (type === "x") { if (!estUn(a)) val.appendChild(noeudAbs(a, "entiers")); val.appendChild(document.createTextNode("x")); }
   else val.appendChild(noeudAbs(a, "entiers"));
   b.appendChild(val); return b;
 }
 function lireTermes(s) {              // « 2x+3 » -> liste de blocs statiques
-  return (s.replace(/\s/g, "").match(/[+-]?\d*x|[+-]?\d+/g) || []).map((tk) => {
-    const sg = tk[0] === "-" ? -1 : 1, corps = tk.replace(/^[+-]/, "");
-    if (corps.endsWith("x")) return blocStatique("x", F(sg * (corps.length > 1 ? parseInt(corps, 10) : 1)));
-    return blocStatique("n", F(sg * parseInt(corps, 10)));
+  return (s.replace(/\s/g, "").match(/[+-]?\d*x|[+-]?\d+/g) || []).map((tk, i) => {
+    const sg = tk[0] === "-" ? -1 : 1, corps = tk.replace(/^[+-]/, ""), sans = i === 0 && sg > 0;
+    if (corps.endsWith("x")) return blocStatique("x", F(sg * (corps.length > 1 ? parseInt(corps, 10) : 1)), sans);
+    return blocStatique("n", F(sg * parseInt(corps, 10)), sans);
   });
 }
+const ecrireEq = (s) => s.replace(/\s/g, "").replace(/\+/g, " + ").replace(/-/g, " − ").replace(/=/g, " = ").trim();   // « 2x+3=11 » -> « 2x + 3 = 11 »
 function afficherCours() {
   const racine = $("cours"); racine.textContent = "";
   const tete = el("div", "fiche-tete");
@@ -982,8 +984,11 @@ function afficherCours() {
       if (c.lignes) c.lignes.forEach((x) => sec.appendChild(el("div", "cours-ligne", x)));
       if (c.blocs) {
         const [g, d] = c.blocs.split("="), ligne = el("div", "cours-eq");
+        sec.appendChild(el("div", "cours-ligne", "L’équation : " + ecrireEq(c.blocs)));      // d’abord l’écriture classique
+        sec.appendChild(el("div", "legende-cours", "En blocs :"));
         lireTermes(g).forEach((b) => ligne.appendChild(b)); ligne.appendChild(el("span", "egal-s", "="));
         lireTermes(d).forEach((b) => ligne.appendChild(b)); sec.appendChild(ligne);
+        sec.appendChild(el("div", "legende-cours", "bleu = l’inconnue x · ambre = un nombre · rond vert = signe + · rond rouge = signe − (le 1er terme positif s’écrit sans signe)"));
       }
     });
     racine.appendChild(sec);

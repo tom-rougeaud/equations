@@ -4,7 +4,7 @@
    IMPORTANT : à chaque mise à jour publiée, changer le numéro dans NOM_CACHE,
    sinon les anciens fichiers restent servis.
    ============================================================================ */
-const NOM_CACHE = "blocs-equations-v3.0.0";
+const NOM_CACHE = "blocs-equations-v3.0.1";
 const FICHIERS = [
   "./", "index.html", "manifest.webmanifest", "icon.svg",
   "icon-192.png", "icon-512.png", "icon-maskable-512.png", "fiche-revision-equations.pdf"
