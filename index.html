@@ -383,7 +383,7 @@ details.journal summary{cursor:pointer;font-weight:700;min-height:44px;display:f
   "cours": [
     {"type": "def", "titre": "Qu’est-ce qu’une équation ?", "contenu": [
       {"p": "Une **équation** est une égalité qui contient une **inconnue**, souvent notée **x**."},
-      {"blocs": "x+3=8"},
+      {"blocs": "2x-4=20"},
       {"p": "Comme une balance : les deux côtés du « = » ont la même valeur."},
       {"p": "Couleurs : **bleu** = l’inconnue x · **ambre** = un nombre · + vert · − rouge · × violet · ÷ bleu-vert."},
       {"p": "5 + 3 = 8 n’est pas une équation : il n’y a pas d’inconnue."}
@@ -391,7 +391,7 @@ details.journal summary{cursor:pointer;font-weight:700;min-height:44px;display:f
     {"type": "def", "titre": "Que veut dire « résoudre » ?", "contenu": [
       {"p": "**Résoudre** une équation, c’est trouver la valeur de x qui rend l’égalité vraie."},
       {"p": "Cette valeur s’appelle la **solution**."},
-      {"p": "Exemple : x + 3 = 8 a pour solution **x = 5**, car 5 + 3 = 8."}
+      {"p": "Exemple : 2x − 4 = 20 a pour solution **x = 12**, car 2 × 12 − 4 = 20."}
     ]},
     {"type": "def", "titre": "Inconnue ou variable ?", "contenu": [
       {"p": "Une **inconnue** est un nombre qu’on **cherche** : dans une équation, x a une valeur précise à trouver."},
@@ -402,7 +402,7 @@ details.journal summary{cursor:pointer;font-weight:700;min-height:44px;display:f
       {"p": "**1. L’équilibre.** Ce que je fais d’un côté du « = », je le fais de l’autre."},
       {"p": "**2. Le changement de côté.** Un terme qui traverse le « = » **inverse son opération** :"},
       {"inverses": true},
-      {"p": "Exemples : + 3 devient − 3 ; le 2 de 2x = 8 devient ÷ 2, donc x = 8 ÷ 2."}
+      {"p": "Exemples : − 4 devient + 4 ; le 2 de 2x = 24 devient ÷ 2, donc x = 24 ÷ 2."}
     ]},
     {"type": "methode", "titre": "La méthode en 4 étapes", "contenu": [
       {"ol": [
@@ -413,9 +413,9 @@ details.journal summary{cursor:pointer;font-weight:700;min-height:44px;display:f
       ]},
       {"p": "Puis **vérifie** : remplace x par la solution dans l’équation de départ."}
     ]},
-    {"type": "exemple", "titre": "Exemple 1 : 2x + 3 = 11", "contenu": [
-      {"lignes": ["2x + 3 = 11", "2x = 11 − 3   (le + 3 devient − 3)", "2x = 8", "x = 8 ÷ 2   (le × 2 devient ÷ 2)", "x = 4"]},
-      {"p": "Vérification : 2 × 4 + 3 = 11 ✓"}
+    {"type": "exemple", "titre": "Exemple 1 : 2x − 4 = 20", "contenu": [
+      {"lignes": ["2x − 4 = 20", "2x = 20 + 4   (le − 4 devient + 4)", "2x = 24", "x = 24 ÷ 2   (le × 2 devient ÷ 2)", "x = 12"]},
+      {"p": "Vérification : 2 × 12 − 4 = 20 ✓"}
     ]},
     {"type": "exemple", "titre": "Exemple 2 : x des deux côtés", "contenu": [
       {"lignes": ["5x + 2 = 3x + 10", "5x − 3x = 10 − 2   (+ 3x devient − 3x ; + 2 devient − 2)", "2x = 8", "x = 8 ÷ 2", "x = 4"]},
@@ -424,7 +424,7 @@ details.journal summary{cursor:pointer;font-weight:700;min-height:44px;display:f
     {"type": "attention", "titre": "Erreurs fréquentes", "contenu": [
       {"liste": [
         "Oublier de changer le signe quand un terme traverse le « = ».",
-        "Faire passer le coefficient sans inverser l’opération : 2x = 8 ne donne pas x = 8 × 2.",
+        "Faire passer le coefficient sans inverser l’opération : 2x = 24 ne donne pas x = 24 × 2.",
         "Se tromper de signe en divisant par un nombre négatif : −3x = 12 donne x = 12 ÷ (−3) = −4.",
         "Oublier de vérifier avec l’équation de départ."
       ]}
@@ -446,7 +446,7 @@ details.journal summary{cursor:pointer;font-weight:700;min-height:44px;display:f
    BLOCS ÉQUATIONS — moteur (Tom Rougeaud · réalisé avec Claude Sonnet 5.5)
    Sections : 1 outils · 2 fractions · 3 stockage · 4 génération · 5 plateau
    ============================================================================ */
-const VERSION = "3.1.0";
+const VERSION = "3.1.1";
 const PREFIXE = "blocseq_v3_";                       // préfixe des clés de stockage
 const CONTENU = JSON.parse(document.getElementById("contenu").textContent);
 const REDUIT = !!(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches);
