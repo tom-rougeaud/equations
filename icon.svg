@@ -1,0 +1,11 @@
+<!-- Blocs Équations — icône. Auteur : Tom Rougeaud · réalisée avec Claude Sonnet 5.5 -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="96" fill="#1f2f4a"/>
+  <rect x="64" y="150" width="150" height="110" rx="26" fill="#8fb0dc"/>
+  <rect x="64" y="282" width="150" height="110" rx="26" fill="#e7c48f"/>
+  <rect x="298" y="150" width="150" height="110" rx="26" fill="#e7c48f"/>
+  <rect x="236" y="214" width="40" height="14" rx="7" fill="#f3eee4"/>
+  <rect x="236" y="246" width="40" height="14" rx="7" fill="#f3eee4"/>
+  <circle cx="108" cy="205" r="20" fill="#2f7a58"/><rect x="98" y="201" width="20" height="8" rx="3" fill="#fff"/><rect x="104" y="195" width="8" height="20" rx="3" fill="#fff"/>
+  <circle cx="108" cy="337" r="20" fill="#b24a36"/><rect x="98" y="333" width="20" height="8" rx="3" fill="#fff"/>
+</svg>
