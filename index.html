@@ -32,6 +32,7 @@
   --x-fond:#8fb0dc; --x-encre:#10233f;   /* inconnue x = bleu */
   --n-fond:#e7c48f; --n-encre:#3a2a10;   /* nombre   = ambre */
   --plus:#2f7a58;   --moins:#b24a36;     /* signe + vert profond, signe − terre cuite */
+  --fois:#6a4c93;   --div:#1c7a86;        /* × violet, ÷ bleu-vert */
   --ok:#2f7a58; --alerte:#b24a36; --info:#3d63a0;
   --rayon:16px;
   --taille:17px;           /* taille de texte réglable */
@@ -85,52 +86,63 @@ a.btn{color:var(--encre)}
 .pastille small{display:block;font-weight:500;font-size:.62rem;opacity:.85}
 .consigne{text-align:center;margin:8px 0 2px;font-weight:600}
 .message{min-height:3.4em;text-align:center;padding:4px 6px;white-space:pre-line}
-.message b{color:var(--alerte)}
-.legende{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;font-size:.8rem;color:var(--muet)}
+.message b{color:var(--encre)}
+.legende{display:flex;gap:10px 14px;justify-content:center;flex-wrap:wrap;font-size:.8rem;color:var(--muet)}
 .puce{display:inline-block;width:14px;height:14px;border-radius:4px;vertical-align:-2px;margin-right:4px}
 h2{font-size:1.2rem;margin:.4em 0}
 h3{font-size:1.02rem;margin:.6em 0 .2em}
 
-/* ===== 4. La balance et les blocs ===== */
-.balance{display:grid;grid-template-columns:1fr 38px 1fr;gap:6px;align-items:stretch;position:relative}
-.pile{
-  display:flex;flex-direction:column;gap:8px;padding:8px;border-radius:12px;min-height:150px;
-  background:rgba(31,47,74,.05);border:2px dashed transparent;transition:background .2s,border-color .2s
+/* ===== 4. L’équation : vraie écriture, opérateurs colorés ===== */
+.equation{
+  font-size:30px;display:flex;align-items:center;justify-content:center;gap:.3em;
+  overflow:hidden;white-space:nowrap;padding:.45em .15em;font-weight:800
 }
-.pile.cible{background:rgba(61,99,160,.14);border-color:var(--info)}
-.egal{display:flex;align-items:center;justify-content:center;font-size:2.1rem;font-weight:800}
-.bloc{
-  position:relative;border:0;border-radius:14px;padding:8px 6px;min-height:58px;
-  display:flex;align-items:center;justify-content:center;gap:8px;
-  font-size:1.45rem;font-weight:800;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;
-  box-shadow:0 3px 0 rgba(0,0,0,.18);transition:transform .28s ease,opacity .28s ease
+.equation.retour{flex-wrap:wrap;white-space:normal;overflow:visible;row-gap:.3em}
+.membre{
+  display:flex;align-items:center;gap:.22em;flex:none;min-height:2.3em;padding:.15em .25em;
+  border:2px dashed transparent;border-radius:.6em;transition:background .2s,border-color .2s
 }
-.bloc.x{background:var(--x-fond);color:var(--x-encre)}
-.bloc.n{background:var(--n-fond);color:var(--n-encre)}
-.bloc.statique{cursor:default;min-width:56px;min-height:46px;font-size:1.15rem;padding:6px 10px;display:inline-flex}
-.bloc .signe{
-  display:inline-flex;align-items:center;justify-content:center;width:1.45em;height:1.45em;border-radius:50%;
-  color:#fff;font-size:.95em;line-height:1
+.membre.cible{background:rgba(61,99,160,.14);border-color:var(--info)}
+.egal{font-size:1.15em;font-weight:900;flex:none}
+.terme{display:inline-flex;align-items:center;gap:.1em;position:relative;transition:transform .28s ease,opacity .28s ease;border-radius:.5em}
+.op{font-weight:900;padding:0 .1em;user-select:none;-webkit-user-select:none;touch-action:none}
+/* Opérateurs : + vert, − rouge, × violet, ÷ bleu-vert (le symbole change aussi : jamais la couleur seule) */
+.o-p{color:var(--plus)}.o-m{color:var(--moins)}.o-f{color:var(--fois)}.o-d{color:var(--div)}
+.puce{
+  border:0;font:inherit;font-weight:800;border-radius:.4em;min-height:44px;min-width:1.7em;padding:.05em .4em;
+  display:inline-flex;align-items:center;justify-content:center;box-shadow:0 .07em 0 rgba(0,0,0,.18);
+  cursor:grab;user-select:none;-webkit-user-select:none;touch-action:none
 }
-.bloc .signe.p{background:var(--plus)}
-.bloc .signe.m{background:var(--moins)}
-.frac{display:inline-flex;flex-direction:column;align-items:center;line-height:1.05;font-size:.85em}
-.frac span:first-child{border-bottom:2px solid currentColor;padding:0 4px 1px}
-.bloc.vers-droite{transform:translateX(70%) scale(.88);opacity:.15}
-.bloc.vers-gauche{transform:translateX(-70%) scale(.88);opacity:.15}
-.bloc.arrive{animation:retourne .55s ease}
-@keyframes retourne{0%{transform:rotateX(90deg);opacity:.2}60%{transform:rotateX(-14deg);opacity:1}100%{transform:rotateX(0)}}
-.bloc.indice{outline:4px solid var(--alerte);outline-offset:2px}
-.bloc.paire{outline:3px dashed var(--muet);outline-offset:2px}
-.bloc.souleve{opacity:.3}
-.bloc.fantome{position:fixed;z-index:50;pointer-events:none;margin:0;opacity:.95;box-shadow:0 10px 24px rgba(0,0,0,.28);transform:scale(1.06)}
-.vide{margin:auto;color:var(--muet);text-align:center}
+span.puce{cursor:default}
+.puce.x{background:var(--x-fond);color:var(--x-encre)}
+.puce.n{background:var(--n-fond);color:var(--n-encre)}
+.puce.coef{margin-right:.04em}
+.frac{display:inline-flex;flex-direction:column;align-items:center;line-height:1.05;font-size:.7em}
+.frac span:first-child{border-bottom:.1em solid currentColor;padding:0 .2em .05em}
+.frac span:last-child{padding-top:.05em}
+.puce:disabled{cursor:default}
+.terme.vers-droite{transform:translateX(130%) scale(.9);opacity:.1}
+.terme.vers-gauche{transform:translateX(-130%) scale(.9);opacity:.1}
+/* le terme arrive : son opérateur se retourne pour montrer l’inversion */
+.terme.arrive .op{display:inline-block;animation:flipop .9s ease}
+.terme.arrive .puce{animation:pop .5s ease}
+@keyframes flipop{0%{transform:scale(2.4) rotate(-120deg);opacity:0}55%{transform:scale(1.35) rotate(8deg);opacity:1}100%{transform:none}}
+@keyframes pop{0%{transform:scale(.7)}70%{transform:scale(1.08)}100%{transform:none}}
+.terme.indice,.puce.indice{outline:4px solid var(--alerte);outline-offset:3px}
+.terme.paire{outline:3px dashed var(--muet);outline-offset:3px}
+.souleve{opacity:.3}
+.fantome{position:fixed;z-index:50;pointer-events:none;margin:0;opacity:.95;filter:drop-shadow(0 10px 14px rgba(0,0,0,.3));transform:scale(1.08);font-weight:800;white-space:nowrap}
+.equation.resolu .puce{background:var(--ok);color:#fff}
+.equation.statique{font-size:26px;justify-content:flex-start;overflow:visible;padding:.2em 0}
+.equation.statique .puce{min-height:2em}
 .eq-ligne{font-weight:700;font-size:1.05rem;padding:3px 0}
 .eq-ligne.sol{color:var(--ok)}
 details.journal{margin-top:8px}
 details.journal summary{cursor:pointer;font-weight:700;min-height:44px;display:flex;align-items:center}
 .victoire{border-color:var(--ok)}
 .victoire h2{color:var(--ok);margin-top:0}
+.inverses{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0}
+.inverses span.paire-inv{border:2px solid var(--bord);border-radius:12px;padding:4px 12px;font-weight:800;font-size:1.1rem;background:#fff}
 
 /* ===== 5. Tutoriel (animation) ===== */
 .demo-leg{min-height:4.6em;font-size:1.02rem}
@@ -152,8 +164,6 @@ details.journal summary{cursor:pointer;font-weight:700;min-height:44px;display:f
 .bloc-cours.attention{border-left-color:var(--alerte)}.bloc-cours.attention .tag{background:var(--alerte)}
 .bloc-cours p{margin:.35em 0}
 .bloc-cours ol,.bloc-cours ul{margin:.3em 0;padding-left:1.3em}
-.cours-eq{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin:6px 0}
-.cours-eq .egal-s{font-size:1.5rem;font-weight:800}
 .legende-cours{font-size:.82rem;color:var(--muet);margin:2px 0}
 .cours-ligne{font-weight:700;font-size:1.05rem;margin:2px 0}
 
@@ -174,9 +184,8 @@ details.journal summary{cursor:pointer;font-weight:700;min-height:44px;display:f
 .erreur-globale{background:var(--alerte);color:#fff;padding:10px 14px;text-align:center;font-weight:700}
 
 @media (prefers-reduced-motion:reduce){
-  .bloc,.pile{transition:none}.bloc.arrive,.btn.pulse:not(:disabled){animation:none}
+  .terme,.membre{transition:none}.terme.arrive .op,.terme.arrive .puce,.btn.pulse:not(:disabled){animation:none}
 }
-@media (max-width:360px){.bloc{font-size:1.2rem}}
 
 /* ===== 9. Impression : seule la fiche de révision est imprimée (PDF) ===== */
 @media print{
@@ -185,7 +194,7 @@ details.journal summary{cursor:pointer;font-weight:700;min-height:44px;display:f
   .entete,.nav,.bandeau,.voile,.no-print,.page:not(#page-cours){display:none!important}
   #page-cours{display:block!important;padding:0;max-width:none}
   .bloc-cours,.fiche-tete,.carte{break-inside:avoid}
-  .bloc{box-shadow:none;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .puce{box-shadow:none;-webkit-print-color-adjust:exact;print-color-adjust:exact}
 }
 </style>
 </head>
@@ -204,19 +213,19 @@ details.journal summary{cursor:pointer;font-weight:700;min-height:44px;display:f
     <p class="consigne" id="consigne"></p>
 
     <div class="carte">
-      <div class="balance" id="jeu-balance">
-        <div class="pile" id="jeu-g" aria-label="Membre de gauche"></div>
+      <div class="equation" id="jeu-balance" role="group" aria-label="Équation à résoudre">
+        <div class="membre" id="jeu-g" aria-label="Membre de gauche"></div>
         <div class="egal" aria-hidden="true">=</div>
-        <div class="pile" id="jeu-d" aria-label="Membre de droite"></div>
+        <div class="membre" id="jeu-d" aria-label="Membre de droite"></div>
       </div>
     </div>
 
     <div class="message" id="message" aria-live="polite"></div>
     <div class="legende" aria-hidden="true">
-      <span><span class="puce" style="background:var(--x-fond)"></span>inconnue x</span>
-      <span><span class="puce" style="background:var(--n-fond)"></span>nombre</span>
-      <span><span class="puce" style="background:var(--plus)"></span>signe +</span>
-      <span><span class="puce" style="background:var(--moins)"></span>signe −</span>
+      <span><span class="puce x" style="min-height:0;min-width:0;padding:0 6px;font-size:.8rem;cursor:default">x</span> inconnue</span>
+      <span><span class="puce n" style="min-height:0;min-width:0;padding:0 6px;font-size:.8rem;cursor:default">3</span> nombre</span>
+      <span><b class="o-p">+</b> vert</span><span><b class="o-m">−</b> rouge</span>
+      <span><b class="o-f">×</b> violet</span><span><b class="o-d">÷</b> bleu-vert</span>
     </div>
 
     <div class="carte victoire" id="victoire" hidden>
@@ -226,8 +235,8 @@ details.journal summary{cursor:pointer;font-weight:700;min-height:44px;display:f
     </div>
 
     <div class="grille2" style="margin-top:10px">
-      <button class="btn" id="bRegrouper" type="button">Regrouper les termes semblables</button>
-      <button class="btn" id="bDiviser" type="button">Diviser les deux côtés</button>
+      <button class="btn" id="bRegrouper" type="button">Regrouper / calculer</button>
+      <button class="btn" id="bDiviser" type="button">Diviser par le coefficient</button>
       <button class="btn" id="bAnnuler" type="button">↩ Annuler</button>
       <button class="btn" id="bIndice" type="button">💡 Un indice</button>
       <button class="btn primaire pleine" id="bNouvelle" type="button">Nouvelle équation</button>
@@ -245,10 +254,10 @@ details.journal summary{cursor:pointer;font-weight:700;min-height:44px;display:f
     <h2>Comment ça marche ?</h2>
     <p id="tuto-intro"></p>
     <div class="carte">
-      <div class="balance" id="demo-balance">
-        <div class="pile" id="demo-g" aria-label="Membre de gauche (démonstration)"></div>
+      <div class="equation" id="demo-balance" role="group" aria-label="Équation de la démonstration">
+        <div class="membre" id="demo-g" aria-label="Membre de gauche (démonstration)"></div>
         <div class="egal" aria-hidden="true">=</div>
-        <div class="pile" id="demo-d" aria-label="Membre de droite (démonstration)"></div>
+        <div class="membre" id="demo-d" aria-label="Membre de droite (démonstration)"></div>
       </div>
       <div class="etapes" id="demo-points" aria-hidden="true"></div>
       <div class="demo-leg" id="demo-legende" aria-live="polite"></div>
@@ -356,17 +365,19 @@ details.journal summary{cursor:pointer;font-weight:700;min-height:44px;display:f
     "intro": "Une équation est une balance en équilibre. Regarde la démonstration, puis essaie toi-même.",
     "regles": [
       "**Règle 1** : ce que je fais d’un côté du « = », je le fais de l’autre.",
-      "**Règle 2** : un bloc qui traverse le « = » **change de signe** (+ devient −, − devient +).",
-      "Bleu = l’inconnue x · Ambre = un nombre · rond vert = signe + · rond rouge = signe −.",
-      "Sur téléphone : **touche** un bloc ou **glisse-le** de l’autre côté."
+      "**Règle 2** : un terme qui traverse le « = » **inverse son opération** : + devient −, − devient +, × devient ÷, ÷ devient ×.",
+      "Couleurs : + vert · − rouge · × violet · ÷ bleu-vert. Bleu = l’inconnue x · ambre = un nombre.",
+      "Dans 3x, le **3** multiplie x : touche ou glisse le **3** seul, il devient **÷ 3** de l’autre côté.",
+      "Sur téléphone : **touche** ou **glisse** un terme de l’autre côté."
     ],
     "etapes": [
       "Voici l’équation **2x + 3 = 11**. Les deux côtés du « = » sont équilibrés. On cherche la valeur de x.",
-      "Pour isoler x, le bloc **+ 3** gêne. On le fait passer de l’autre côté du « = ».",
-      "Il a traversé le « = » : il **change de signe** et devient **− 3**.",
-      "On **regroupe** les nombres du même côté : 11 − 3 = **8**.",
-      "Il reste 2x = 8. On **divise les deux côtés par 2** : x = 8 ÷ 2.",
-      "**Solution : x = 4.** Vérification : 2 × 4 + 3 = 11 ✓"
+      "Pour isoler x, le terme **+ 3** gêne. On le fait passer de l’autre côté du « = ».",
+      "Il a traversé le « = » : l’opération s’inverse, **+ 3** devient **− 3**.",
+      "On regroupe les nombres : 11 − 3 = **8**.",
+      "Il reste **2x = 8**. Le **2** multiplie x : on le fait passer de l’autre côté.",
+      "Le 2 a traversé le « = » : l’opération s’inverse, **× 2** devient **÷ 2**. On a maintenant x = 8 ÷ 2.",
+      "On calcule : 8 ÷ 2 = **4**. **Solution : x = 4.** Vérification : 2 × 4 + 3 = 11 ✓"
     ]
   },
   "cours": [
@@ -374,6 +385,7 @@ details.journal summary{cursor:pointer;font-weight:700;min-height:44px;display:f
       {"p": "Une **équation** est une égalité qui contient une **inconnue**, souvent notée **x**."},
       {"blocs": "x+3=8"},
       {"p": "Comme une balance : les deux côtés du « = » ont la même valeur."},
+      {"p": "Couleurs : **bleu** = l’inconnue x · **ambre** = un nombre · + vert · − rouge · × violet · ÷ bleu-vert."},
       {"p": "5 + 3 = 8 n’est pas une équation : il n’y a pas d’inconnue."}
     ]},
     {"type": "def", "titre": "Que veut dire « résoudre » ?", "contenu": [
@@ -388,30 +400,31 @@ details.journal summary{cursor:pointer;font-weight:700;min-height:44px;display:f
     ]},
     {"type": "regle", "titre": "Les deux règles d’or", "contenu": [
       {"p": "**1. L’équilibre.** Ce que je fais d’un côté du « = », je le fais de l’autre."},
-      {"p": "**2. Le changement de côté.** Un terme qui traverse le « = » change de signe : + 3 devient − 3 ; − 5 devient + 5."},
-      {"p": "Un nombre qui multiplie x passe de l’autre côté en **divisant** : 2x = 8 donne x = 8 ÷ 2."}
+      {"p": "**2. Le changement de côté.** Un terme qui traverse le « = » **inverse son opération** :"},
+      {"inverses": true},
+      {"p": "Exemples : + 3 devient − 3 ; le 2 de 2x = 8 devient ÷ 2, donc x = 8 ÷ 2."}
     ]},
     {"type": "methode", "titre": "La méthode en 4 étapes", "contenu": [
       {"ol": [
         "Repère l’inconnue x et son côté.",
-        "Envoie les **nombres seuls** de l’autre côté (ils changent de signe).",
+        "Envoie les **nombres seuls** de l’autre côté (+ devient −, − devient +).",
         "**Regroupe** les termes semblables (les x ensemble, les nombres ensemble).",
-        "**Divise** par le nombre qui multiplie x, des deux côtés."
+        "Fais passer le **coefficient** de x de l’autre côté : × devient ÷, puis calcule."
       ]},
       {"p": "Puis **vérifie** : remplace x par la solution dans l’équation de départ."}
     ]},
     {"type": "exemple", "titre": "Exemple 1 : 2x + 3 = 11", "contenu": [
-      {"lignes": ["2x + 3 = 11", "2x = 11 − 3   (le +3 change de côté : −3)", "2x = 8", "x = 8 ÷ 2", "x = 4"]},
+      {"lignes": ["2x + 3 = 11", "2x = 11 − 3   (le + 3 devient − 3)", "2x = 8", "x = 8 ÷ 2   (le × 2 devient ÷ 2)", "x = 4"]},
       {"p": "Vérification : 2 × 4 + 3 = 11 ✓"}
     ]},
     {"type": "exemple", "titre": "Exemple 2 : x des deux côtés", "contenu": [
-      {"lignes": ["5x + 2 = 3x + 10", "5x − 3x = 10 − 2   (3x et 2 changent de côté)", "2x = 8", "x = 4"]},
+      {"lignes": ["5x + 2 = 3x + 10", "5x − 3x = 10 − 2   (+ 3x devient − 3x ; + 2 devient − 2)", "2x = 8", "x = 8 ÷ 2", "x = 4"]},
       {"p": "Vérification : 5 × 4 + 2 = 22 et 3 × 4 + 10 = 22 ✓"}
     ]},
     {"type": "attention", "titre": "Erreurs fréquentes", "contenu": [
       {"liste": [
         "Oublier de changer le signe quand un terme traverse le « = ».",
-        "Diviser un seul côté au lieu des deux.",
+        "Faire passer le coefficient sans inverser l’opération : 2x = 8 ne donne pas x = 8 × 2.",
         "Se tromper de signe en divisant par un nombre négatif : −3x = 12 donne x = 12 ÷ (−3) = −4.",
         "Oublier de vérifier avec l’équation de départ."
       ]}
@@ -433,17 +446,26 @@ details.journal summary{cursor:pointer;font-weight:700;min-height:44px;display:f
    BLOCS ÉQUATIONS — moteur (Tom Rougeaud · réalisé avec Claude Sonnet 5.5)
    Sections : 1 outils · 2 fractions · 3 stockage · 4 génération · 5 plateau
    ============================================================================ */
-const VERSION = "3.0.1";
+const VERSION = "3.1.0";
 const PREFIXE = "blocseq_v3_";                       // préfixe des clés de stockage
 const CONTENU = JSON.parse(document.getElementById("contenu").textContent);
 const REDUIT = !!(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches);
 
-/* ---------- 1. Outils : texte enrichi sans innerHTML (**gras**) ---------- */
-function riche(texte, parent) {            // écrit le texte dans parent ; **mot** devient <b>mot</b>
+/* ---------- 1. Outils : texte enrichi sans innerHTML (**gras**) + opérateurs colorés ---------- */
+const CLASSE_OP = { "+": "o-p", "−": "o-m", "×": "o-f", "÷": "o-d" };   // vert, rouge, violet, bleu-vert
+function opsColores(parent, texte) {         // écrit le texte ; chaque + − × ÷ est coloré
+  String(texte).split(/([+−×÷])/).forEach((m) => {
+    if (!m) return;
+    if (CLASSE_OP[m]) { const s = document.createElement("span"); s.className = CLASSE_OP[m]; s.textContent = m; parent.appendChild(s); }
+    else parent.appendChild(document.createTextNode(m));
+  });
+  return parent;
+}
+function riche(texte, parent) {            // **mot** devient <b>mot</b> ; les opérateurs sont colorés
   parent.textContent = "";
   String(texte).split("**").forEach((morceau, i) => {
-    if (i % 2) { const b = document.createElement("b"); b.textContent = morceau; parent.appendChild(b); }
-    else if (morceau) parent.appendChild(document.createTextNode(morceau));
+    if (i % 2) { const b = document.createElement("b"); opsColores(b, morceau); parent.appendChild(b); }
+    else if (morceau) opsColores(parent, morceau);
   });
   return parent;
 }
@@ -505,18 +527,20 @@ function texteTerme(t, mode) {               // « + 3 », « − 2x », « + 3/
   const corps = t.type === "x" ? (estUn(a) ? "" : texteAbs(a, mode)) + "x" : texteAbs(a, mode);
   return (t.v.n < 0 ? "− " : "+ ") + corps;
 }
-function texteMembre(m, mode) {              // « 2x + 3 », « − x − 4 »
+function texteMembre(m, mode, q) {          // « 2x + 3 », « − x − 4 », « 12 ÷ 3 »
   if (!m.length) return "0";
-  return m.map((t, i) => {
+  const corps = m.map((t, i) => {
     const a = absF(t.v);
-    const corps = t.type === "x" ? (estUn(a) ? "" : texteAbs(a, mode)) + "x" : texteAbs(a, mode);
-    if (i === 0) return (t.v.n < 0 ? "−" : "") + corps;
-    return (t.v.n < 0 ? " − " : " + ") + corps;
+    const c = t.type === "x" ? (estUn(a) ? "" : texteAbs(a, mode)) + "x" : texteAbs(a, mode);
+    if (i === 0) return (t.v.n < 0 ? "−" : "") + c;
+    return (t.v.n < 0 ? " − " : " + ") + c;
   }).join("");
+  if (!q) return corps;
+  return (m.length > 1 ? "(" + corps + ")" : corps) + " ÷ " + texteSigne(q, mode);
 }
-const texteEq = (eq, mode) => texteMembre(eq.g, mode) + " = " + texteMembre(eq.d, mode);
+const texteEq = (eq, mode) => texteMembre(eq.g, mode, eq.qg) + " = " + texteMembre(eq.d, mode, eq.qd);
 const valeurMembre = (m, x) => m.reduce((s, t) => plus(s, t.type === "x" ? fois(t.v, x) : t.v), F(0));
-const copie = (eq) => ({ g: eq.g.map((t) => ({ ...t })), d: eq.d.map((t) => ({ ...t })) });
+const copie = (eq) => ({ g: eq.g.map((t) => ({ ...t })), d: eq.d.map((t) => ({ ...t })), qg: eq.qg || null, qd: eq.qd || null });   // qg / qd : division en attente d’un membre
 
 /* ---------- 3. Stockage protégé (try/catch + repli en mémoire) ---------- */
 const MEMOIRE = {};
@@ -581,24 +605,62 @@ function genererEquation(niveau, reg) {
   return { g: [terme("x", F(1)), terme("n", F(3))], d: [terme("n", F(8))] };  // sécurité
 }
 
+/* ---------- 4 bis. Affichage « vraie équation » : opérateurs colorés + puces x / nombre ---------- */
+function elementTerme(t, premier, mode, interactif) {
+  const w = el("span", "terme"); w.dataset.id = t.id;
+  const neg = t.v.n < 0, a = absF(t.v);
+  if (!premier || neg) {                      // le 1er terme positif s’écrit sans signe, comme à la main
+    const op = el("span", "op " + (neg ? "o-m" : "o-p"), neg ? "−" : "+"); op.dataset.role = "terme"; w.appendChild(op);
+  }
+  const puce = (classe, role) => { const e = el(interactif ? "button" : "span", "puce " + classe); if (interactif) e.type = "button"; e.dataset.role = role; return e; };
+  const dire = texteTerme(t, mode).replace("−", "moins").replace("+", "plus");
+  if (t.type === "x") {
+    if (!estUn(a)) {                          // le coefficient est une puce à part : il peut passer seul de l’autre côté
+      const c = puce("n coef", "coef"); c.appendChild(noeudAbs(a, mode));
+      if (interactif) c.setAttribute("aria-label", "Coefficient " + texteAbs(a, mode) + " : touche ou glisse pour le passer de l’autre côté, il devient une division");
+      w.appendChild(c);
+    }
+    const x = puce("x", "terme"); x.textContent = "x";
+    if (interactif) x.setAttribute("aria-label", "Terme " + dire + ", touche ou glisse pour le passer de l’autre côté");
+    w.appendChild(x);
+  } else {
+    const n = puce("n", "terme"); n.appendChild(noeudAbs(a, mode));
+    if (interactif) n.setAttribute("aria-label", "Terme " + dire + ", touche ou glisse pour le passer de l’autre côté");
+    w.appendChild(n);
+  }
+  return w;
+}
+function elementQueue(k, cote, mode, interactif) {   // « ÷ 3 » en attente de calcul
+  const w = el("span", "terme queue"); w.dataset.queue = cote;
+  const op = el("span", "op o-d", "÷"); op.dataset.role = "queue"; w.appendChild(op);
+  const c = el(interactif ? "button" : "span", "puce n"); if (interactif) c.type = "button"; c.dataset.role = "queue";
+  if (k.n < 0) c.textContent = "−" + texteAbs(k, mode); else c.appendChild(noeudAbs(k, mode));
+  if (interactif) c.setAttribute("aria-label", "Division par " + texteSigne(k, mode) + " : touche pour la renvoyer de l’autre côté (elle redevient une multiplication)");
+  w.appendChild(c); return w;
+}
+
 /* ---------- 5. Le plateau : même moteur pour le jeu et la démonstration ---------- */
 function creerPlateau(cfg) {
   /* cfg : elG, elD, elBalance, interactif, mode(), auto(), surChangement(), surVictoire(v), surMessage(t) */
-  const P = { eq: null, depart: null, historique: [], journal: [], indiceId: null, occupe: false, fini: false };
+  const P = { eq: null, depart: null, historique: [], journal: [], indiceId: null, indiceCoef: false, occupe: false, fini: false };
   const mode = () => (cfg.mode ? cfg.mode() : "entiers");
   const dire = (t) => { if (cfg.surMessage) cfg.surMessage(t); };
+  const ecr = (v) => texteSigne(v, mode());
 
   /* --- règles --- */
   const regroupable = (m) => ["x", "n"].some((ty) => m.filter((t) => t.type === ty).length > 1);
-  P.peutRegrouper = () => regroupable(P.eq.g) || regroupable(P.eq.d);
-  P.cibleDivision = () => {                    // un seul terme en x (coef ≠ 1) face à un seul nombre
+  const calculable = (c) => P.eq["q" + c] && P.eq[c].length === 1 && P.eq[c][0].type === "n";   // « 12 ÷ 3 » à calculer
+  P.peutRegrouper = () => regroupable(P.eq.g) || regroupable(P.eq.d) || !!calculable("g") || !!calculable("d");
+  P.cibleDivision = () => {                    // un seul terme k·x face à un seul nombre, sans division en attente
+    if (P.eq.qg || P.eq.qd) return null;
     for (const [c, o] of [["g", "d"], ["d", "g"]]) {
       const a = P.eq[c], b = P.eq[o];
-      if (a.length === 1 && a[0].type === "x" && !estUn(a[0].v) && b.length === 1 && b[0].type === "n") return { cote: c, autre: o, k: a[0].v };
+      if (a.length === 1 && a[0].type === "x" && !estUn(a[0].v) && b.length === 1 && b[0].type === "n") return { cote: c, autre: o, k: a[0].v, id: a[0].id };
     }
     return null;
   };
   P.gagne = () => {                            // renvoie la solution (fraction) ou null
+    if (P.eq.qg || P.eq.qd) return null;
     for (const [a, b] of [[P.eq.g, P.eq.d], [P.eq.d, P.eq.g]]) {
       if (a.length === 1 && a[0].type === "x" && estUn(a[0].v) && b.length === 1 && b[0].type === "n") return b[0].v;
     }
@@ -607,14 +669,14 @@ function creerPlateau(cfg) {
 
   /* --- état et annulation --- */
   P.charger = (eq) => {
-    P.eq = copie(eq); P.depart = copie(eq); P.historique = []; P.indiceId = null; P.occupe = false; P.fini = false;
+    P.eq = copie(eq); P.depart = copie(eq); P.historique = []; P.indiceId = null; P.indiceCoef = false; P.occupe = false; P.fini = false;
     P.journal = [texteEq(P.eq, mode())];
     P.dessiner(); if (cfg.surChangement) cfg.surChangement();
   };
   const sauver = () => P.historique.push({ eq: copie(P.eq), jn: P.journal.length });
   P.annuler = () => {
     if (!P.historique.length || P.occupe) return;
-    const h = P.historique.pop(); P.eq = h.eq; P.journal.length = h.jn; P.fini = false; P.indiceId = null;
+    const h = P.historique.pop(); P.eq = h.eq; P.journal.length = h.jn; P.fini = false; P.indiceId = null; P.indiceCoef = false;
     dire("Étape annulée."); P.dessiner(); if (cfg.surChangement) cfg.surChangement();
   };
   const apres = () => {                        // après chaque action : affichage, victoire, regroupement auto
@@ -627,25 +689,53 @@ function creerPlateau(cfg) {
   };
 
   /* --- actions --- */
-  P.deplacer = (id, anim, bouton) => {
+  P.deplacer = (id, anim, bouton) => {         // un terme traverse le « = » : son opération s’inverse
     if (P.occupe || P.fini) return;
+    if (P.eq.qg || P.eq.qd) { dire("Calcule d’abord la division en attente : touche **« Regrouper / calculer »**."); return; }
     const deG = P.eq.g.some((t) => t.id === id);
     const faire = () => {
       const src = deG ? P.eq.g : P.eq.d, dst = deG ? P.eq.d : P.eq.g;
       const t = src.splice(src.findIndex((q) => q.id === id), 1)[0];
       const avant = texteTerme(t, mode());
-      t.v = oppose(t.v); t.neuf = true; P.indiceId = null;      // LE SIGNE CHANGE en traversant le « = »
+      t.v = oppose(t.v); t.neuf = true; P.indiceId = null; P.indiceCoef = false;   // + devient −, − devient +
       dst.push(t);
       if (!src.length) src.push(Object.assign(terme("n", F(0)), { neuf: true }));  // membre vide = 0
-      dire("Le bloc **" + avant + "** traverse le « = » : il devient **" + texteTerme(t, mode()) + "**. Il change de signe.");
+      dire("Le terme **" + avant + "** traverse le « = » : l’opération s’inverse, il devient **" + texteTerme(t, mode()) + "**.");
       apres();
     };
     sauver(); P.occupe = true;
     if (anim && bouton && !REDUIT) { bouton.classList.add(deG ? "vers-droite" : "vers-gauche"); setTimeout(faire, 260); } else faire();
   };
-  P.regrouper = () => {
+  P.diviser = () => {                          // le coefficient k de kx passe de l’autre côté : × devient ÷
+    const c = P.cibleDivision();
+    if (!c || P.occupe || P.fini) return;
+    sauver(); P.occupe = true; P.indiceId = null; P.indiceCoef = false;
+    P.eq[c.cote] = [Object.assign(terme("x", F(1)), { neuf: true })];
+    P.eq["q" + c.autre] = c.k; P.queueNeuve = c.autre;
+    dire("Le **" + ecr(c.k) + "** qui multiplie x traverse le « = » : l’opération s’inverse, **× " + ecr(c.k) + "** devient **÷ " + ecr(c.k) + "**.");
+    apres();
+  };
+  P.essayerCoef = () => {                      // appui ou glissement sur un coefficient
+    if (P.occupe || P.fini) return;
+    if (P.cibleDivision()) { P.diviser(); return; }
+    const g = P.eq.g, d = P.eq.d;
+    if (P.eq.qg || P.eq.qd) dire("Calcule d’abord la division en attente : touche **« Regrouper / calculer »**.");
+    else if ((g.some((t) => t.type === "x") && g.length > 1) || (d.some((t) => t.type === "x") && d.length > 1)) dire("Le coefficient ne peut passer de l’autre côté que si le terme en x est **seul** de son côté : envoie d’abord les autres termes.");
+    else dire("Regroupe d’abord les termes de l’autre côté : il doit rester **un seul nombre**.");
+  };
+  P.deplacerQueue = (cote) => {                // « ÷ k » repasse de l’autre côté : ÷ redevient ×
+    if (P.occupe || P.fini) return;
+    const autre = cote === "g" ? "d" : "g", k = P.eq["q" + cote], o = P.eq[autre];
+    if (!k) return;
+    if (!(o.length === 1 && o[0].type === "x")) { dire("Pour renvoyer cette division, il faut un terme en x **seul** de l’autre côté."); return; }
+    sauver(); P.occupe = true;
+    o[0].v = fois(o[0].v, k); o[0].neuf = true; P.eq["q" + cote] = null;
+    dire("La division par **" + ecr(k) + "** traverse le « = » : l’opération s’inverse, **÷ " + ecr(k) + "** redevient **× " + ecr(k) + "**.");
+    apres();
+  };
+  P.regrouper = () => {                        // regroupe les termes semblables ET calcule les divisions en attente
     if (!P.peutRegrouper() || P.occupe || P.fini) return;
-    sauver(); P.occupe = true; P.indiceId = null;
+    sauver(); P.occupe = true; P.indiceId = null; P.indiceCoef = false;
     const phrases = [];
     for (const c of ["g", "d"]) {
       const res = [];
@@ -653,114 +743,124 @@ function creerPlateau(cfg) {
         const l = P.eq[c].filter((t) => t.type === ty);
         if (l.length > 1) {
           const somme = l.reduce((s, t) => plus(s, t.v), F(0));
-          const ecr = (v) => texteSigne(v, mode()) + (ty === "x" ? "x" : "");
-          phrases.push(l.map((t) => ecr(t.v)).join(" et ") + " → " + ecr(somme));
+          const e2 = (v) => texteSigne(v, mode()) + (ty === "x" ? "x" : "");
+          phrases.push(l.map((t) => e2(t.v)).join(" et ") + " → " + e2(somme));
           if (!estZero(somme)) res.push(Object.assign(terme(ty, somme), { neuf: true }));
         } else if (l.length === 1) res.push(l[0]);
       }
       P.eq[c] = res.length ? res : [Object.assign(terme("n", F(0)), { neuf: true })];
+      if (calculable(c)) {                     // ex. 8 ÷ 2 = 4
+        const k = P.eq["q" + c], v = P.eq[c][0].v, r = divise(v, k);
+        phrases.push(ecr(v) + " ÷ " + ecr(k) + " = " + ecr(r));
+        P.eq[c] = [Object.assign(terme("n", r), { neuf: true })]; P.eq["q" + c] = null;
+      }
     }
-    dire("On regroupe : **" + phrases.join(" ; ") + "**");
-    apres();
-  };
-  P.diviser = () => {
-    const c = P.cibleDivision();
-    if (!c || P.occupe || P.fini) return;
-    sauver(); P.occupe = true; P.indiceId = null;
-    const r = P.eq[c.autre][0].v, res = divise(r, c.k);
-    P.eq[c.cote] = [Object.assign(terme("x", F(1)), { neuf: true })];
-    P.eq[c.autre] = [Object.assign(terme("n", res), { neuf: true })];
-    const ecr = (v) => (v.n < 0 ? "(" + texteSigne(v, mode()) + ")" : texteSigne(v, mode()));
-    dire("On divise les deux côtés par **" + ecr(c.k) + "** : " + texteSigne(r, mode()) + " ÷ " + ecr(c.k) + " = **" + texteSigne(res, mode()) + "**");
+    dire("On calcule : **" + phrases.join(" ; ") + "**");
     apres();
   };
 
   /* --- indice : propose l’étape suivante, sans la jouer --- */
   P.indice = () => {
     if (P.fini) return null;
-    if (P.peutRegrouper()) return { msg: "Des termes semblables sont du même côté : touche **« Regrouper »**.", id: null, bouton: "regrouper" };
+    if (P.peutRegrouper()) return { msg: "Il y a des termes à regrouper ou une division à calculer : touche **« Regrouper / calculer »**.", id: null, bouton: "regrouper" };
     const c = P.cibleDivision();
-    if (c) return { msg: "x est multiplié par un nombre : touche **« Diviser »** pour diviser les deux côtés.", id: null, bouton: "diviser" };
+    if (c) {
+      if (estUn(absF(c.k))) return { msg: "x est précédé d’un signe − : touche **« Diviser par (−1) »**.", id: null, bouton: "diviser" };
+      return { msg: "Le **" + ecr(c.k) + "** multiplie x : fais-le passer de l’autre côté, il devient une division.", id: c.id, coef: true, bouton: "diviser" };
+    }
     const xG = P.eq.g.some((t) => t.type === "x"), xD = P.eq.d.some((t) => t.type === "x");
-    if (xG && xD) { const t = P.eq.d.find((q) => q.type === "x"); return { msg: "Il y a des x des deux côtés : envoie ce bloc à gauche.", id: t.id }; }
+    if (xG && xD) { const t = P.eq.d.find((q) => q.type === "x"); return { msg: "Il y a des x des deux côtés : envoie ce terme à gauche.", id: t.id }; }
     const xCote = xG ? P.eq.g : P.eq.d;
     const gen = xCote.find((t) => t.type === "n");
-    if (gen) return { msg: "Isole le terme en x : envoie ce nombre de l’autre côté (il change de signe).", id: gen.id };
-    return { msg: "Continue en touchant un bloc.", id: null };
+    if (gen) return { msg: "Isole le terme en x : envoie ce nombre de l’autre côté (son opération s’inverse).", id: gen.id };
+    return { msg: "Continue en touchant un terme.", id: null };
   };
   P.montrerIndice = () => {
     const i = P.indice(); if (!i) return null;
-    P.indiceId = i.id; dire("💡 " + i.msg); P.dessiner(); return i;
+    P.indiceId = i.id; P.indiceCoef = !!i.coef; dire("💡 " + i.msg); P.dessiner(); return i;
   };
 
-  /* --- dessin des blocs --- */
-  const creerBloc = (t, cote) => {
-    const b = el("button", "bloc " + t.type);
-    b.type = "button"; b.dataset.id = t.id;
-    b.setAttribute("aria-label", "Bloc " + texteTerme(t, mode()).replace("−", "moins").replace("+", "plus") + (cfg.interactif ? ", touche ou glisse pour le passer de l’autre côté" : ""));
-    b.appendChild(el("span", "signe " + (t.v.n < 0 ? "m" : "p"), t.v.n < 0 ? "−" : "+"));
-    const val = el("span");
-    const a = absF(t.v);
-    if (t.type === "x") { if (!estUn(a)) val.appendChild(noeudAbs(a, mode())); val.appendChild(document.createTextNode("x")); }
-    else val.appendChild(noeudAbs(a, mode()));
-    b.appendChild(val);
-    if (t.neuf) { if (!REDUIT) b.classList.add("arrive"); delete t.neuf; }
-    if (t.id === P.indiceId) b.classList.add("indice");
-    if (cfg.interactif) brancher(b, t, cote); else b.disabled = true;
-    return b;
+  /* --- dessin de l’équation : les termes sont des unités « opérateur + puce » --- */
+  P.ajuster = () => {                          // réduit la taille pour que l’équation tienne sur une ligne
+    const z = cfg.elBalance;
+    z.style.fontSize = ""; z.classList.remove("retour");
+    if (!z.offsetParent) return;               // page cachée : on ajustera à l’affichage
+    let s = parseFloat(getComputedStyle(z).fontSize);
+    while (z.scrollWidth > z.clientWidth + 1 && s > 15) { s -= 1; z.style.fontSize = s + "px"; }
+    if (z.scrollWidth > z.clientWidth + 1) z.classList.add("retour");   // vraiment trop long : retour à la ligne
   };
   P.dessiner = () => {
     for (const [c, zone] of [["g", cfg.elG], ["d", cfg.elD]]) {
       zone.textContent = "";
-      P.eq[c].forEach((t) => zone.appendChild(creerBloc(t, c)));
+      P.eq[c].forEach((t, i) => {
+        const w = elementTerme(t, i === 0, mode(), cfg.interactif);
+        if (t.neuf) { if (!REDUIT) w.classList.add("arrive"); delete t.neuf; }
+        if (t.id === P.indiceId) { if (P.indiceCoef) { const cp = w.querySelector(".coef"); if (cp) cp.classList.add("indice"); } else w.classList.add("indice"); }
+        zone.appendChild(w);
+        if (cfg.interactif) brancher(w, c);
+      });
+      const q = P.eq["q" + c];
+      if (q) { const w = elementQueue(q, c, mode(), cfg.interactif); if (P.queueNeuve === c && !REDUIT) w.classList.add("arrive"); zone.appendChild(w); if (cfg.interactif) brancher(w, c); }
+      for (const ty of ["x", "n"]) {           // paires regroupables en pointillés
+        const l = P.eq[c].filter((t) => t.type === ty);
+        if (l.length > 1) l.forEach((t) => { const w = zone.querySelector('.terme[data-id="' + t.id + '"]'); if (w) w.classList.add("paire"); });
+      }
     }
-    for (const c of ["g", "d"]) for (const ty of ["x", "n"]) {      // paires regroupables en pointillés
-      const l = P.eq[c].filter((t) => t.type === ty);
-      if (l.length > 1) l.forEach((t) => { const b = cfg[c === "g" ? "elG" : "elD"].querySelector('[data-id="' + t.id + '"]'); if (b) b.classList.add("paire"); });
-    }
-    if (P.fini) [cfg.elG, cfg.elD].forEach((z) => z.querySelectorAll(".bloc").forEach((b) => { b.disabled = true; }));
+    P.queueNeuve = null;
+    cfg.elBalance.classList.toggle("resolu", P.fini);
+    if (P.fini) [cfg.elG, cfg.elD].forEach((z) => z.querySelectorAll("button").forEach((b) => { b.disabled = true; }));
+    P.ajuster();
   };
 
-  /* --- toucher OU glisser un bloc (souris, doigt, stylet) + clavier --- */
-  function brancher(b, t, cote) {
-    let dep = null;
-    const cibleDe = (x) => { const r = cfg.elBalance.getBoundingClientRect(); return x < r.left + r.width / 2 ? "g" : "d"; };
-    const nettoyer = () => {
-      if (dep && dep.fant) dep.fant.remove();
-      cfg.elG.classList.remove("cible"); cfg.elD.classList.remove("cible"); b.classList.remove("souleve");
-    };
-    b.addEventListener("pointerdown", (e) => {
-      if (e.button > 0 || P.occupe || P.fini) return;
-      dep = { x: e.clientX, y: e.clientY, id: e.pointerId, glisse: false, fant: null };
-      try { b.setPointerCapture(e.pointerId); } catch (_) { /* ignoré */ }
+  /* --- toucher OU glisser (souris, doigt, stylet) + clavier --- */
+  const agir = (role, w, cote, anim) => {
+    if (role === "coef") P.essayerCoef();
+    else if (role === "queue") P.deplacerQueue(cote);
+    else P.deplacer(Number(w.dataset.id), anim, w);
+  };
+  function brancher(w, cote) {
+    w.querySelectorAll("[data-role]").forEach((e) => {
+      const role = e.dataset.role;
+      let dep = null;
+      const milieu = () => { const g = cfg.elBalance.querySelector(".egal").getBoundingClientRect(); return g.left + g.width / 2; };
+      const nettoyer = () => {
+        if (dep && dep.fant) dep.fant.remove();
+        cfg.elG.classList.remove("cible"); cfg.elD.classList.remove("cible"); w.classList.remove("souleve");
+      };
+      e.addEventListener("pointerdown", (ev) => {
+        if (ev.button > 0 || P.occupe || P.fini) return;
+        dep = { x: ev.clientX, y: ev.clientY, id: ev.pointerId, glisse: false, fant: null };
+        try { e.setPointerCapture(ev.pointerId); } catch (_) { /* ignoré */ }
+      });
+      e.addEventListener("pointermove", (ev) => {
+        if (!dep || ev.pointerId !== dep.id) return;
+        if (!dep.glisse && Math.hypot(ev.clientX - dep.x, ev.clientY - dep.y) > 8) {       // seuil : sinon c’est un simple appui
+          dep.glisse = true;
+          const modele = role === "coef" ? e : w;
+          const f = modele.cloneNode(true); f.classList.remove("vers-droite", "vers-gauche", "arrive", "indice", "paire"); f.classList.add("fantome");
+          f.style.fontSize = getComputedStyle(cfg.elBalance).fontSize;
+          document.body.appendChild(f); dep.fant = f; w.classList.add("souleve");
+        }
+        if (dep.glisse) {
+          dep.fant.style.left = ev.clientX - dep.fant.offsetWidth / 2 + "px";
+          dep.fant.style.top = ev.clientY - dep.fant.offsetHeight / 2 + "px";
+          const ou = ev.clientX < milieu() ? "g" : "d";
+          const cible = ou === "g" ? cfg.elG : cfg.elD, autre = ou === "g" ? cfg.elD : cfg.elG;
+          autre.classList.remove("cible"); cible.classList.toggle("cible", ou !== cote);
+        }
+      });
+      const fin = (ev, annule) => {
+        if (!dep || ev.pointerId !== dep.id) return;
+        const d = dep; nettoyer(); dep = null;
+        try { e.releasePointerCapture(ev.pointerId); } catch (_) { /* ignoré */ }
+        if (annule) return;
+        if (d.glisse) { if ((ev.clientX < milieu() ? "g" : "d") !== cote) agir(role, w, cote, false); }
+        else agir(role, w, cote, true);
+      };
+      e.addEventListener("pointerup", (ev) => fin(ev, false));
+      e.addEventListener("pointercancel", (ev) => fin(ev, true));
+      e.addEventListener("click", (ev) => { if (ev.detail === 0 && e.tagName === "BUTTON") agir(role, w, cote, true); });   // clavier : Entrée / Espace
     });
-    b.addEventListener("pointermove", (e) => {
-      if (!dep || e.pointerId !== dep.id) return;
-      if (!dep.glisse && Math.hypot(e.clientX - dep.x, e.clientY - dep.y) > 8) {     // seuil : sinon c’est un simple appui
-        dep.glisse = true;
-        const f = b.cloneNode(true); f.className = b.className.replace(/vers-\w+|arrive|indice|paire/g, "") + " fantome";
-        f.style.width = b.offsetWidth + "px"; f.style.height = b.offsetHeight + "px";
-        document.body.appendChild(f); dep.fant = f; b.classList.add("souleve");
-      }
-      if (dep.glisse) {
-        dep.fant.style.left = e.clientX - dep.fant.offsetWidth / 2 + "px";
-        dep.fant.style.top = e.clientY - dep.fant.offsetHeight / 2 + "px";
-        const ou = cibleDe(e.clientX);
-        const zoneCible = ou === "g" ? cfg.elG : cfg.elD, autre = ou === "g" ? cfg.elD : cfg.elG;
-        autre.classList.remove("cible"); zoneCible.classList.toggle("cible", ou !== cote);
-      }
-    });
-    const fin = (e, annule) => {
-      if (!dep || e.pointerId !== dep.id) return;
-      const d = dep; nettoyer(); dep = null;
-      try { b.releasePointerCapture(e.pointerId); } catch (_) { /* ignoré */ }
-      if (annule) return;
-      if (d.glisse) { if (cibleDe(e.clientX) !== cote) P.deplacer(t.id, false); }
-      else P.deplacer(t.id, true, b);
-    };
-    b.addEventListener("pointerup", (e) => fin(e, false));
-    b.addEventListener("pointercancel", (e) => fin(e, true));
-    b.addEventListener("click", (e) => { if (e.detail === 0) P.deplacer(t.id, true, b); });   // clavier : Entrée / Espace
   }
   return P;
 }
@@ -791,11 +891,14 @@ function afficherPage(nom) {
   });
   if (nom !== "tuto") demoArreter();
   if (nom === "plus") majStats();
+  if (nom === "jouer") jeu.ajuster();
+  if (nom === "tuto") demo.ajuster();
   window.scrollTo(0, 0);
   try { history.replaceState(null, "", "#" + nom); } catch (e) { /* aperçu sans historique */ }
 }
 document.querySelectorAll(".nav button").forEach((b) => b.addEventListener("click", () => afficherPage(b.dataset.page)));
 
+window.addEventListener("resize", () => { jeu.ajuster(); demo.ajuster(); });
 function appliquerTaille() { document.documentElement.style.setProperty("--taille", [15, 17, 20][REG.texte] + "px"); }
 
 const demandePleinEcran = document.documentElement.requestFullscreen || document.documentElement.webkitRequestFullscreen;
@@ -822,7 +925,7 @@ let stats = { reussites: { 1: 0, 2: 0, 3: 0, 4: 0 } };
 })();
 const sauverStats = () => Stock.ecrire("stats", stats);
 
-const MSG_DEBUT = "Touche un bloc ou glisse-le de l’autre côté : il traverse le « = » et change de signe.";
+const MSG_DEBUT = "Touche ou glisse un terme de l’autre côté du « = » : son opération s’inverse (+ ↔ −, × ↔ ÷).";
 function direJeu(t) { dernierMessage = t; riche(t, $("message")); }
 
 const jeu = creerPlateau({
@@ -836,13 +939,13 @@ function majJeu() {                    // met à jour boutons, journal, aide aut
   $("bRegrouper").disabled = fini || !jeu.peutRegrouper();
   const c = jeu.cibleDivision();
   $("bDiviser").disabled = fini || !c;
-  $("bDiviser").textContent = c ? "Diviser les deux côtés par " + (c.k.n < 0 ? "(" + texteSigne(c.k, REG.nombres) + ")" : texteSigne(c.k, REG.nombres)) : "Diviser les deux côtés";
+  $("bDiviser").textContent = c ? "Faire passer le " + (c.k.n < 0 ? "(" + texteSigne(c.k, REG.nombres) + ")" : texteSigne(c.k, REG.nombres)) + " (× devient ÷)" : "Diviser par le coefficient";
   $("bRegrouper").classList.toggle("pulse", !$("bRegrouper").disabled);
   $("bDiviser").classList.toggle("pulse", !$("bDiviser").disabled);
   $("bAnnuler").disabled = !jeu.historique.length;
   $("bIndice").disabled = fini;
   const j = $("journal"); j.textContent = "";
-  jeu.journal.forEach((l, i) => j.appendChild(el("div", "eq-ligne" + (fini && i === jeu.journal.length - 1 ? " sol" : ""), l)));
+  jeu.journal.forEach((l, i) => j.appendChild(opsColores(el("div", "eq-ligne" + (fini && i === jeu.journal.length - 1 ? " sol" : "")), l)));
   if (REG.aideAuto || guide) {          // aide pas à pas : on ajoute l’étape suivante sous l’explication
     const i = jeu.indice();
     if (i && !fini) { jeu.indiceId = i.id; jeu.dessiner(); direJeu(dernierMessage.split("\n")[0] + "\n💡 " + i.msg); }
@@ -875,7 +978,7 @@ function nouvelleEquation(eq) {
 function victoireJeu(v) {
   const eq = jeu.depart, m = REG.nombres;
   const g = valeurMembre(eq.g, v), d = valeurMembre(eq.d, v);
-  $("victoire-verif").textContent = "x = " + texteSigne(v, m) + ". Vérification : " + texteSigne(g, m) + " = " + texteSigne(d, m) + " ✓";
+  opsColores($("victoire-verif"), "x = " + texteSigne(v, m) + ". Vérification : " + texteSigne(g, m) + " = " + texteSigne(d, m) + " ✓");
   const conseil = $("victoire-conseil"); conseil.textContent = "";
   serie++;
   if (!guide) { stats.reussites[niveau]++; sauverStats(); }
@@ -887,7 +990,6 @@ function victoireJeu(v) {
     b.addEventListener("click", () => { niveau++; serie = 0; nouvelleEquation(); }); conseil.appendChild(b);
   }
   $("victoire").hidden = false;
-  document.querySelectorAll("#jeu-g .bloc, #jeu-d .bloc").forEach((b) => { b.style.background = "var(--ok)"; b.style.color = "#fff"; });
   direJeu("**Solution : x = " + texteSigne(v, m) + "**");
   $("journal-det").open = true;
   guide = false;
@@ -918,10 +1020,13 @@ for (let i = 0; i < NB_ETAPES; i++) $("demo-points").appendChild(el("i"));
 /* Actions de chaque étape (étape 0 = équation de départ) */
 function demoAppliquer(i, anime) {
   const nombreG = () => demo.eq.g.find((t) => t.type === "n");
-  if (i === 1) { demo.indiceId = nombreG().id; demo.dessiner(); }                      // on désigne le +3
-  if (i === 2) { const id = nombreG().id; demo.indiceId = null; const b = $("demo-g").querySelector('[data-id="' + id + '"]'); demo.deplacer(id, anime, b); }
-  if (i === 3) demo.regrouper();
-  if (i === 4) demo.diviser();
+  const xG = () => demo.eq.g.find((t) => t.type === "x");
+  if (i === 1) { demo.indiceId = nombreG().id; demo.indiceCoef = false; demo.dessiner(); }          // on désigne le + 3
+  if (i === 2) { const id = nombreG().id; demo.indiceId = null; demo.deplacer(id, anime, $("demo-g").querySelector('.terme[data-id="' + id + '"]')); }
+  if (i === 3) demo.regrouper();                                                                    // 11 − 3 = 8
+  if (i === 4) { demo.indiceId = xG().id; demo.indiceCoef = true; demo.dessiner(); }                // on désigne le 2
+  if (i === 5) demo.diviser();                                                                      // × 2 devient ÷ 2
+  if (i === 6) demo.regrouper();                                                                    // 8 ÷ 2 = 4
 }
 function demoAller(i, anime) {
   demoEtape = Math.max(0, Math.min(NB_ETAPES - 1, i));
@@ -948,27 +1053,25 @@ $("demoRejouer").addEventListener("click", () => { demoArreter(); demoAller(0, f
 document.addEventListener("visibilitychange", () => { if (document.hidden) demoArreter(); });
 $("bGuide").addEventListener("click", () => {
   niveau = 1; serie = 0; afficherPage("jouer");
-  nouvelleEquation({ g: [terme("x", F(1)), terme("n", F(3))], d: [terme("n", F(8))] });
+  nouvelleEquation({ g: [terme("x", F(2)), terme("n", F(3))], d: [terme("n", F(11))] });
 });
 
 /* ---------- 9. Cours = fiche de révision (imprimable en PDF) ---------- */
 const ETIQUETTES = { def: "Définition", regle: "À retenir", methode: "Méthode", exemple: "Exemple", attention: "Attention" };
-function blocStatique(type, v, sansSigne) {
-  const b = el("span", "bloc statique " + type);
-  if (!sansSigne) b.appendChild(el("span", "signe " + (v.n < 0 ? "m" : "p"), v.n < 0 ? "−" : "+"));   // le 1er terme positif s’écrit sans signe
-  const val = el("span"), a = absF(v);
-  if (type === "x") { if (!estUn(a)) val.appendChild(noeudAbs(a, "entiers")); val.appendChild(document.createTextNode("x")); }
-  else val.appendChild(noeudAbs(a, "entiers"));
-  b.appendChild(val); return b;
-}
-function lireTermes(s) {              // « 2x+3 » -> liste de blocs statiques
-  return (s.replace(/\s/g, "").match(/[+-]?\d*x|[+-]?\d+/g) || []).map((tk, i) => {
-    const sg = tk[0] === "-" ? -1 : 1, corps = tk.replace(/^[+-]/, ""), sans = i === 0 && sg > 0;
-    if (corps.endsWith("x")) return blocStatique("x", F(sg * (corps.length > 1 ? parseInt(corps, 10) : 1)), sans);
-    return blocStatique("n", F(sg * parseInt(corps, 10)), sans);
+function membreStatique(texte) {      // « 2x+3 » -> membre dessiné comme dans le jeu (sans interaction)
+  const m = el("div", "membre");
+  (texte.replace(/\s/g, "").match(/[+-]?\d*x|[+-]?\d+/g) || []).forEach((tk, i) => {
+    const sg = tk[0] === "-" ? -1 : 1, corps = tk.replace(/^[+-]/, "");
+    const t = corps.endsWith("x") ? terme("x", F(sg * (corps.length > 1 ? parseInt(corps, 10) : 1))) : terme("n", F(sg * parseInt(corps, 10)));
+    m.appendChild(elementTerme(t, i === 0, "entiers", false));
   });
+  return m;
 }
-const ecrireEq = (s) => s.replace(/\s/g, "").replace(/\+/g, " + ").replace(/-/g, " − ").replace(/=/g, " = ").trim();   // « 2x+3=11 » -> « 2x + 3 = 11 »
+function equationStatique(texte) {
+  const [g, d] = texte.split("="), ligne = el("div", "equation statique");
+  ligne.appendChild(membreStatique(g)); ligne.appendChild(el("div", "egal", "=")); ligne.appendChild(membreStatique(d));
+  return ligne;
+}
 function afficherCours() {
   const racine = $("cours"); racine.textContent = "";
   const tete = el("div", "fiche-tete");
@@ -981,14 +1084,12 @@ function afficherCours() {
     s.contenu.forEach((c) => {
       if (c.p) sec.appendChild(riche(c.p, el("p")));
       if (c.liste || c.ol) { const l = el(c.ol ? "ol" : "ul"); (c.ol || c.liste).forEach((x) => l.appendChild(riche(x, el("li")))); sec.appendChild(l); }
-      if (c.lignes) c.lignes.forEach((x) => sec.appendChild(el("div", "cours-ligne", x)));
-      if (c.blocs) {
-        const [g, d] = c.blocs.split("="), ligne = el("div", "cours-eq");
-        sec.appendChild(el("div", "cours-ligne", "L’équation : " + ecrireEq(c.blocs)));      // d’abord l’écriture classique
-        sec.appendChild(el("div", "legende-cours", "En blocs :"));
-        lireTermes(g).forEach((b) => ligne.appendChild(b)); ligne.appendChild(el("span", "egal-s", "="));
-        lireTermes(d).forEach((b) => ligne.appendChild(b)); sec.appendChild(ligne);
-        sec.appendChild(el("div", "legende-cours", "bleu = l’inconnue x · ambre = un nombre · rond vert = signe + · rond rouge = signe − (le 1er terme positif s’écrit sans signe)"));
+      if (c.lignes) c.lignes.forEach((x) => sec.appendChild(opsColores(el("div", "cours-ligne"), x)));
+      if (c.blocs) sec.appendChild(equationStatique(c.blocs));
+      if (c.inverses) {                                    // + ↔ −   × ↔ ÷ avec les couleurs du jeu
+        const z = el("div", "inverses");
+        ["+ devient −", "− devient +", "× devient ÷", "÷ devient ×"].forEach((t) => z.appendChild(opsColores(el("span", "paire-inv"), t)));
+        sec.appendChild(z);
       }
     });
     racine.appendChild(sec);
